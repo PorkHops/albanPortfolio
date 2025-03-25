@@ -10,7 +10,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddMudServices();
 builder.Services.AddHttpClient();
-
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

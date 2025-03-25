@@ -2,15 +2,17 @@
 @using MudBlazor.Components
 
 <MudPaper Width="100%"
-           Height="100%"
-           Class="py-3"
-           Elevation="0"
-           BackgroundColor="Color.Surface">
-    <MudNavMenu Rounded="true"
+          Height="100%"
+          Class="py-3"
+          Elevation="0"
+          BackgroundColor="Color.Primary">
+    <MudNavMenu Color="Color.Dark"
+                Rounded="true"
                 Dense="true"
+                Class="px-2"
                 Margin="Margin.Dense">
-        <MudNavLink Href=""        Icon="Icons.Material.Filled.Home" Label="Home" />
-        <MudNavLink Href="resume"  Icon="Icons.Material.Filled.Add"  Label="Resume" />
-        <MudNavLink Href="weather" Icon="Icons.Material.Filled.List" Label="Weather" />
+        <MudNavLink Href=""        Icon="@Icons.Material.Filled.Home"   >Home</MudNavLink>
+        <MudNavLink Href="resume"  Icon="@Icons.Material.Filled.Article">Resume</MudNavLink>
+        <MudNavLink Href="weather" Icon="@Icons.Material.Filled.WbSunny">Weather</MudNavLink>
     </MudNavMenu>
 </MudPaper>

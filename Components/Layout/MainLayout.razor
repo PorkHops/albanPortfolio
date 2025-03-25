@@ -2,6 +2,8 @@
 @using MudBlazor.Services
 @using MudBlazor.Components
 
+@inject IHttpContextAccessor _context
+
 @inherits LayoutComponentBase
 
 <MudThemeProvider />
@@ -9,14 +11,14 @@
 
     <MudLayout>
         <MudAppBar>
-            <MudIconButton Icon="Icons.Material.Filled.Menu" Edge="Edge.Start" />
             <MudText Typo="Typo.h6" Class="ms-2">Alban's Portfolio</MudText>
             <MudSpacer />
-            <MudButton>Log in</MudButton>
+            <MudText>Your IP @userIP</MudText>
         </MudAppBar>
         <MudDrawer Variant="DrawerVariant.Persistent"
                    Docked="true"
                    Open="true"
+                   ClipMode="@DrawerClipMode.Always"
                    Width="200px">
             <NavMenu />
         </MudDrawer>
@@ -24,3 +26,12 @@
             @Body
         </MudMainContent>
     </MudLayout>
+
+@code{
+    private string userIP { get; set; }
+
+    protected override void OnInitialized()
+    {
+        userIP = _context.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "";
+    }
+}
