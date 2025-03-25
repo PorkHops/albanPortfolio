@@ -1,0 +1,70 @@
+{
+    "skills": {
+        "frontend": [
+            {
+                "name": "Blazor",
+                "level": "Advanced",
+                "years": 4
+            },
+            {
+                "name": "React",
+                "level": "Beginner",
+                "years": 1
+            },
+            {
+                "name": "JavaScript",
+                "level": "Beginner",
+                "years": 2
+            },
+            {
+                "name": "CSS",
+                "level": "Advanced",
+                "years": 8
+            }
+        ],
+        "backend": [
+            {
+                "name": ".NET",
+                "level": "Advanced",
+                "years": 5
+            },
+            {
+                "name": "C#",
+                "level": "Advanced",
+                "years": 5
+            },
+            {
+                "name": "Python",
+                "level": "Intermediate",
+                "years": 6
+            },
+            {
+                "name": "SQL",
+                "level": "Advanced",
+                "years": 5
+            }
+        ],
+        "tools": [
+            {
+                "name": "Git",
+                "level": "Advanced",
+                "years": 5
+            },
+            {
+                "name": "Docker",
+                "level": "Intermediate",
+                "years": 2
+            },
+            {
+                "name": "CI/CD",
+                "level": "Intermediate",
+                "years": 3
+            },
+            {
+                "name": "Azure",
+                "level": "Intermediate",
+                "years": 3
+            }
+        ]
+    }
+}
