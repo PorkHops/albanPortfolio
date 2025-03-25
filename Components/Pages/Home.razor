@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using MudBlazor.Utilities
+@using MudBlazor
 @using System.Text.Json
 @using System.IO
 @inject IWebHostEnvironment Environment
@@ -91,9 +92,14 @@
         <MudText Typo="Typo.h4" Class="mb-4">Let's Connect</MudText>
         <MudText Class="mb-4">I'm always interested in new opportunities and collaborations!</MudText>
         <MudStack Row="true" Justify="Justify.Center" Spacing="4">
-            <MudIconButton Icon="@Icons.Custom.Brands.GitHub"   Color="Color.Dark"      Size="Size.Large" Href="https://github.com/PorkHops" Target="_blank" />
-            <MudIconButton Icon="@Icons.Custom.Brands.LinkedIn" Color="Color.Primary"   Size="Size.Large" Href="https://www.linkedin.com/in/alban-shekaj/" Target="_blank"/>
-            <MudIconButton Icon="@Icons.Material.Filled.Email"  Color="Color.Secondary" Size="Size.Large" Href="mailto:alban.shekaj@gmail.com" Target="_blank" />
+            @foreach (var link in socialLinks)
+            {
+                <MudIconButton Icon="@link.GetIconString()"
+                             Color="@(Enum.Parse<Color>(link.Color))"
+                             Size="Size.Large"
+                             Href="@link.Url"
+                             Target="_blank" />
+            }
         </MudStack>
     </MudPaper>
 </MudContainer>
@@ -102,8 +108,16 @@
     private List<Skill> backendSkills = new List<Skill>();
     private List<Skill> frontendSkills = new List<Skill>();
     private List<Skill> toolSkills = new List<Skill>();
+    private List<SocialLink> socialLinks = new List<SocialLink>();
 
     protected override Task OnInitializedAsync()
+    {
+        LoadSkills();
+        LoadContactInfo();
+        return Task.CompletedTask;
+    }
+
+    private void LoadSkills()
     {
         try
         {
@@ -125,8 +139,28 @@
         {
             Console.WriteLine($"Error loading skills: {ex.Message}");
         }
+    }
 
-        return Task.CompletedTask;
+    private void LoadContactInfo()
+    {
+        try
+        {
+            var filePath = Path.Combine(Environment.ContentRootPath, "Components", "Utils", "Contact.json");
+            Console.WriteLine($"Loading contact info from: {filePath}");
+            var jsonString = File.ReadAllText(filePath);
+            var response = JsonSerializer.Deserialize<ContactData>(jsonString, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+            if (response?.SocialLinks != null)
+            {
+                socialLinks = response.SocialLinks;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading contact info: {ex.Message}");
+        }
     }
 
     public class SkillsData

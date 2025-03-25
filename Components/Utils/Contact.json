@@ -1,0 +1,22 @@
+{
+  "socialLinks": [
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/PorkHops",
+      "color": "Dark"
+    },
+    {
+      "name": "LinkedIn",
+      "icon": "linkedin",
+      "url": "https://www.linkedin.com/in/alban-shekaj/",
+      "color": "Primary"
+    },
+    {
+      "name": "Email",
+      "icon": "email",
+      "url": "mailto:alban.shekaj@gmail.com",
+      "color": "Secondary"
+    }
+  ]
+}
