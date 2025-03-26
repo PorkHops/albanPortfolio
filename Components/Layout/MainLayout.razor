@@ -1,6 +1,7 @@
 ﻿@using MudBlazor
 @using MudBlazor.Services
 @using MudBlazor.Components
+@using albanPortfolio.Components.Utils
 
 @inject IHttpContextAccessor _context
 
@@ -11,9 +12,11 @@
 
     <MudLayout>
         <MudAppBar>
-            <MudText Typo="Typo.h6" Class="ms-2">Alban's Portfolio</MudText>
+            <MudContainer MaxWidth="MaxWidth.Large" Class="d-flex justify-content-center">
+                <MudText Typo="Typo.h6">Alban's Portfolio</MudText>
+            </MudContainer>
             <MudSpacer />
-            <MudText>Your IP @userIP</MudText>
+            <Contact Size="Size.Small" Justify="Justify.FlexStart" />
         </MudAppBar>
         <MudDrawer Variant="DrawerVariant.Persistent"
                    Docked="true"
@@ -28,10 +31,10 @@
     </MudLayout>
 
 @code{
-    private string userIP { get; set; }
+    // private string userIP { get; set; }
 
     protected override void OnInitialized()
     {
-        userIP = _context.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "";
+        // userIP = _context.HttpContext?.Connection?.RemoteIpAddress?.ToString() ?? "";
     }
 }
