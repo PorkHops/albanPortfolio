@@ -13,6 +13,9 @@
                 Margin="Margin.Dense">
         <MudNavLink Href=""        Icon="@Icons.Material.Filled.Home"   >Home</MudNavLink>
         <MudNavLink Href="resume"  Icon="@Icons.Material.Filled.Article">Resume</MudNavLink>
-        <MudNavLink Href="weather" Icon="@Icons.Material.Filled.WbSunny">Weather</MudNavLink>
+        <MudNavGroup Title="Projects" Icon="@Icons.Material.Filled.Assignment" Expanded="true" ExpandIcon="">
+            <MudNavLink Href="/projectsProfessional" Icon="@Icons.Material.Filled.Business">Professional</MudNavLink>
+            <MudNavLink Href="/projectsPersonal" Icon="@Icons.Material.Filled.Person">Personal</MudNavLink>
+        </MudNavGroup>
     </MudNavMenu>
 </MudPaper>
