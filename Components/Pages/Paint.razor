@@ -1,0 +1,192 @@
+@page "/paint"
+@using albanPortfolio.Components.Utils
+@using Microsoft.AspNetCore.Components.Web
+@using MudBlazor
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<MudPaper Class="pa-4 ma-4" Elevation="3">
+    <MudPaper Class="d-flex align-center flex-wrap gap-4 pa-4 mb-4" Elevation="0">
+        <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled">
+            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                        Color="@(CurrentTool == DrawingTool.Pencil ? Color.Secondary : Color.Primary)"
+                        OnClick="@(() => SelectTool(DrawingTool.Pencil))"
+                        Title="Pencil" />
+            <MudIconButton Icon="@Icons.Material.Filled.ShowChart"
+                        Color="@(CurrentTool == DrawingTool.Line ? Color.Secondary : Color.Primary)"
+                        OnClick="@(() => SelectTool(DrawingTool.Line))"
+                        Title="Line" />
+            <MudIconButton Icon="@Icons.Material.Filled.Rectangle"
+                        Color="@(CurrentTool == DrawingTool.Rectangle ? Color.Secondary : Color.Primary)"
+                        OnClick="@(() => SelectTool(DrawingTool.Rectangle))"
+                        Title="Rectangle" />
+            <MudIconButton Icon="@Icons.Material.Filled.Circle"
+                        Color="@(CurrentTool == DrawingTool.Circle ? Color.Secondary : Color.Primary)"
+                        OnClick="@(() => SelectTool(DrawingTool.Circle))"
+                        Title="Circle" />
+            <MudIconButton Icon="@Icons.Material.Filled.Clear"
+                        Color="@(CurrentTool == DrawingTool.Eraser ? Color.Secondary : Color.Primary)"
+                        OnClick="@(() => SelectTool(DrawingTool.Eraser))"
+                        Title="Eraser" />
+        </MudButtonGroup>
+
+        <div class="d-flex align-center gap-4">
+            <div class="d-flex flex-column">
+                <label for="colorPicker" class="mud-input-label">Color</label>
+                <input type="color"
+                       id="colorPicker"
+                       value="@CurrentColor"
+                       @onchange="OnColorChange"
+                       class="color-picker" />
+            </div>
+            <MudSlider @bind-Value="@StrokeWidth"
+                      Min="1" Max="50"
+                      Color="Color.Primary"
+                      Class="mx-4"
+                      @bind-Value:after="@(async () => await OnStrokeWidthChange(StrokeWidth))">
+                Width: @StrokeWidth
+            </MudSlider>
+        </div>
+
+        <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled">
+            <MudButton OnClick="ClearCanvas"
+                    StartIcon="@Icons.Material.Filled.Delete">
+                Clear
+            </MudButton>
+            <MudButton OnClick="DownloadCanvas"
+                    StartIcon="@Icons.Material.Filled.Download">
+                Download
+            </MudButton>
+        </MudButtonGroup>
+    </MudPaper>
+
+    <MudPaper Elevation="0" Class="canvas-container">
+        <canvas @ref="CanvasReference"
+                @onpointerdown:preventDefault
+                @onpointermove:preventDefault
+                @onpointerup:preventDefault
+                @onpointerout:preventDefault
+                @onpointerdown="HandlePointerEvent"
+                @onpointermove="HandlePointerEvent"
+                @onpointerup="HandlePointerEvent"
+                @onpointerout="HandlePointerEvent"
+                style="touch-action: none;"
+                width="800"
+                height="600"></canvas>
+    </MudPaper>
+</MudPaper>
+
+<style>
+    .canvas-container {
+        overflow: hidden;
+        position: relative;
+    }
+
+    canvas {
+        background-color: white;
+        cursor: crosshair;
+        width: 100%;
+        max-width: 800px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .color-picker {
+        width: 100px;
+        height: 40px;
+        padding: 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .mud-input-label {
+        font-size: 0.875rem;
+        color: var(--mud-palette-text-secondary);
+        margin-bottom: 4px;
+    }
+</style>
+
+@code {
+    private ElementReference CanvasReference;
+    private DrawingTool CurrentTool = DrawingTool.Pencil;
+    private string CurrentColor = "#000000";
+    private int StrokeWidth = 5;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            try
+            {
+                await JSRuntime.InvokeVoidAsync("paintApp.initCanvas", CanvasReference);
+                await JSRuntime.InvokeVoidAsync("paintApp.setColor", CurrentColor);
+                await JSRuntime.InvokeVoidAsync("paintApp.setWidth", StrokeWidth);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error initializing canvas: {ex.Message}");
+            }
+        }
+    }
+
+    private async Task SelectTool(DrawingTool tool)
+    {
+        CurrentTool = tool;
+        await JSRuntime.InvokeVoidAsync("paintApp.setTool", tool.ToString().ToLower());
+    }
+
+    private async Task OnColorChange(ChangeEventArgs e)
+    {
+        CurrentColor = e.Value?.ToString() ?? "#000000";
+        await JSRuntime.InvokeVoidAsync("paintApp.setColor", CurrentColor);
+    }
+
+    private async Task OnStrokeWidthChange(int value)
+    {
+        StrokeWidth = value;
+        await JSRuntime.InvokeVoidAsync("paintApp.setWidth", StrokeWidth);
+    }
+
+    private async Task HandlePointerEvent(PointerEventArgs e)
+    {
+        try
+        {
+            bool success = false;
+            switch (e.Type)
+            {
+                case "pointerdown":
+                    success = await JSRuntime.InvokeAsync<bool>("paintApp.startDrawing", e.OffsetX, e.OffsetY);
+                    if (!success) Console.Error.WriteLine("Failed to start drawing");
+                    break;
+                    
+                case "pointermove":
+                    success = await JSRuntime.InvokeAsync<bool>("paintApp.draw", e.OffsetX, e.OffsetY);
+                    // Don't log move failures as they're expected when throttling
+                    break;
+                    
+                case "pointerup":
+                case "pointerout":
+                    success = await JSRuntime.InvokeAsync<bool>("paintApp.stopDrawing");
+                    if (!success) Console.Error.WriteLine("Failed to stop drawing");
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error handling pointer event: {ex.Message}");
+        }
+    }
+
+    private async Task ClearCanvas()
+    {
+        await JSRuntime.InvokeVoidAsync("paintApp.clearCanvas");
+    }
+
+    private async Task DownloadCanvas()
+    {
+        var dataUrl = await JSRuntime.InvokeAsync<string>("paintApp.getCanvasImage");
+        await JSRuntime.InvokeVoidAsync("window.open", dataUrl);
+    }
+}
+
