@@ -6,7 +6,8 @@
 
 @rendermode InteractiveServer
 
-<PageTitle>Professional Projects</PageTitle>
+<PageTitle>Projects</PageTitle>
+@* <PageTitle>Professional Projects</PageTitle> *@
 
 <div class="pa-4">
     <MudTabs Elevation="2" Outlined="true" Position="Position.Top" Rounded="true" Border="false"
@@ -23,7 +24,7 @@
                     @foreach (var bullet in projectSection.Bullets)
                     {
                         <MudItem xs="12">
-                            <MudText Class="mb-4">• @bullet</MudText>
+                            <MudText Class="mb-1">• @bullet</MudText>
                         </MudItem>
                     }
                 </MudGrid>

@@ -41,7 +41,7 @@ public static class ProjectsData
                 },
                 new()
                 {
-                    Title = "Request Processing ()",
+                    Title = "Request Processing",
                     Bullets =
                     [
                         "Everything beyond this point was Implemented with Multithreaded Architecture using Semaphore",
