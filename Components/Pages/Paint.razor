@@ -4,28 +4,33 @@
 @using MudBlazor
 @inject IJSRuntime JSRuntime
 @rendermode InteractiveServer
-
+<div>
+<MudPaper Class="pa-4 ma-4" Elevation="3">
+    <MudText Typo="Typo.h5" Class="mb-4">You know, originally I was going to fix the artifact issue made by the shapes, but I ended up liking it and have decided to embrace it as the main feature. It's not a bug if you want it.
+</MudText>
+</MudPaper>
+</div>
 <MudPaper Class="pa-4 ma-4" Elevation="3">
     <MudPaper Class="d-flex align-center flex-wrap gap-4 pa-4 mb-4" Elevation="0">
         <MudButtonGroup Color="Color.Primary" Variant="Variant.Filled">
-            <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                        Color="@(CurrentTool == DrawingTool.Pencil ? Color.Secondary : Color.Primary)"
+            @* <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                        Color="@(CurrentTool == DrawingTool.Pencil ? Color.Success : Color.Dark)"
                         OnClick="@(() => SelectTool(DrawingTool.Pencil))"
-                        Title="Pencil" />
+                        Title="Pencil" /> *@
             <MudIconButton Icon="@Icons.Material.Filled.ShowChart"
-                        Color="@(CurrentTool == DrawingTool.Line ? Color.Secondary : Color.Primary)"
+                        Color="@(CurrentTool == DrawingTool.Line ? Color.Success : Color.Dark)"
                         OnClick="@(() => SelectTool(DrawingTool.Line))"
                         Title="Line" />
             <MudIconButton Icon="@Icons.Material.Filled.Rectangle"
-                        Color="@(CurrentTool == DrawingTool.Rectangle ? Color.Secondary : Color.Primary)"
+                        Color="@(CurrentTool == DrawingTool.Rectangle ? Color.Success : Color.Dark)"
                         OnClick="@(() => SelectTool(DrawingTool.Rectangle))"
                         Title="Rectangle" />
             <MudIconButton Icon="@Icons.Material.Filled.Circle"
-                        Color="@(CurrentTool == DrawingTool.Circle ? Color.Secondary : Color.Primary)"
+                        Color="@(CurrentTool == DrawingTool.Circle ? Color.Success : Color.Dark)"
                         OnClick="@(() => SelectTool(DrawingTool.Circle))"
                         Title="Circle" />
             <MudIconButton Icon="@Icons.Material.Filled.Clear"
-                        Color="@(CurrentTool == DrawingTool.Eraser ? Color.Secondary : Color.Primary)"
+                        Color="@(CurrentTool == DrawingTool.Eraser ? Color.Success : Color.Dark)"
                         OnClick="@(() => SelectTool(DrawingTool.Eraser))"
                         Title="Eraser" />
         </MudButtonGroup>
@@ -89,6 +94,7 @@
         max-width: 800px;
         display: block;
         margin: 0 auto;
+        border: 2px solid var(--mud-palette-primary);
     }
 
     .color-picker {
@@ -109,7 +115,7 @@
 
 @code {
     private ElementReference CanvasReference;
-    private DrawingTool CurrentTool = DrawingTool.Pencil;
+    private DrawingTool CurrentTool = DrawingTool.Circle;
     private string CurrentColor = "#000000";
     private int StrokeWidth = 5;
 
@@ -148,6 +154,9 @@
         await JSRuntime.InvokeVoidAsync("paintApp.setWidth", StrokeWidth);
     }
 
+    private DateTime lastMoveTime = DateTime.MinValue;
+    private const int MOVE_THROTTLE_MS = 16; // Approximately 60fps
+
     private async Task HandlePointerEvent(PointerEventArgs e)
     {
         try
@@ -159,12 +168,18 @@
                     success = await JSRuntime.InvokeAsync<bool>("paintApp.startDrawing", e.OffsetX, e.OffsetY);
                     if (!success) Console.Error.WriteLine("Failed to start drawing");
                     break;
-                    
+
                 case "pointermove":
+                    var now = DateTime.UtcNow;
+                    if ((now - lastMoveTime).TotalMilliseconds < MOVE_THROTTLE_MS)
+                    {
+                        return; // Skip this move event
+                    }
+                    lastMoveTime = now;
+
                     success = await JSRuntime.InvokeAsync<bool>("paintApp.draw", e.OffsetX, e.OffsetY);
-                    // Don't log move failures as they're expected when throttling
                     break;
-                    
+
                 case "pointerup":
                 case "pointerout":
                     success = await JSRuntime.InvokeAsync<bool>("paintApp.stopDrawing");
@@ -185,8 +200,7 @@
 
     private async Task DownloadCanvas()
     {
-        var dataUrl = await JSRuntime.InvokeAsync<string>("paintApp.getCanvasImage");
-        await JSRuntime.InvokeVoidAsync("window.open", dataUrl);
+        await JSRuntime.InvokeVoidAsync("paintApp.getCanvasImage");
     }
 }
 
