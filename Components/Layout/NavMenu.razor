@@ -2,20 +2,26 @@
 @using MudBlazor.Components
 
 <MudPaper Width="100%"
-          Height="100%"
-          Class="py-3"
-          Elevation="0"
-          BackgroundColor="Color.Primary">
-    <MudNavMenu Color="Color.Dark"
+           Height="100%"
+           Class="py-3"
+           Elevation="0"
+           Style="background-color: transparent">
+    <MudNavMenu Color="Color.Inherit"
                 Rounded="true"
                 Dense="true"
                 Class="px-2"
                 Margin="Margin.Dense">
-        <MudNavLink Href=""        Icon="@Icons.Material.Filled.Home"   >Home</MudNavLink>
-        <MudNavLink Href="resume"  Icon="@Icons.Material.Filled.Article">Resume</MudNavLink>
-        @* <MudNavGroup Title="Projects" Icon="@Icons.Material.Filled.Assignment" Expanded="true" ExpandIcon=""> *@
-            <MudNavLink Href="/projectsProfessional" Icon="@Icons.Material.Filled.Business">Projects</MudNavLink>
-            @* <MudNavLink Href="/projectsPersonal" Icon="@Icons.Material.Filled.Person">Personal</MudNavLink> *@
-        @* </MudNavGroup> *@
+        <MudNavLink Href=""
+                   Icon="@Icons.Material.Filled.Home"
+                   Class="rounded-lg"
+                   ActiveClass="active-nav-link">Home</MudNavLink>
+        <MudNavLink Href="resume"
+                   Icon="@Icons.Material.Filled.Article"
+                   Class="rounded-lg"
+                   ActiveClass="active-nav-link">Resume</MudNavLink>
+        <MudNavLink Href="/projectsProfessional"
+                   Icon="@Icons.Material.Filled.Business"
+                   Class="rounded-lg"
+                   ActiveClass="active-nav-link">Projects</MudNavLink>
     </MudNavMenu>
 </MudPaper>
