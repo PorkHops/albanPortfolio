@@ -1,12 +1,131 @@
 ﻿@page "/resume"
+@using MudBlazor
+@using albanPortfolio.Components.Models
 @rendermode InteractiveServer
 
-<PageTitle>Resume</PageTitle>
+<PageTitle>Resume - Alban</PageTitle>
 
-<div style="height: calc(100vh - 64px); width: 100%; overflow: hidden;">
-    <iframe
-        src="https://drive.google.com/file/d/1RTdFf2PTsqQ2_j6RwX71wa2yJJu01G39/preview"
-        style="width: 100%; height: 100%; border: none;"
-        allowfullscreen>
-    </iframe>
-</div>
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudPaper Class="pa-4 mb-4" Elevation="0">
+        <MudText Typo="Typo.h2" Align="Align.Center" Class="mb-4">Senior Software Engineer</MudText>
+        <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Secondary">
+            Full-stack developer specializing in .NET, Blazor, and modern web technologies
+        </MudText>
+    </MudPaper>
+
+    <MudGrid>
+        <MudItem xs="12">
+            <MudText Typo="Typo.h4" Class="mb-4">Technical Skills</MudText>
+            <MudGrid>
+                @foreach (var category in skillCategories)
+                {
+                    <MudItem xs="12" md="4">
+                        <MudCard Elevation="0" Class="mb-4">
+                            <MudCardHeader>
+                                <MudText Typo="Typo.h6">@category.Name</MudText>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                @foreach (var skill in category.Skills)
+                                {
+                                    <div class="mb-3">
+                                        <MudText Class="mb-2">@skill.Name</MudText>
+                                        <MudProgressLinear Color="Color.Primary" Value="@skill.Level" Class="my-2" />
+                                    </div>
+                                }
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.h4" Class="mb-4">Professional Experience</MudText>
+            <MudTimeline>
+                @foreach (var experience in experiences)
+                {
+                    <MudTimelineItem Color="Color.Primary">
+                        <MudCard Elevation="2" Class="mb-4">
+                            <MudCardHeader>
+                                <MudCardHeaderContent>
+                                    <MudText Typo="Typo.h6">@experience.Title</MudText>
+                                    <MudText Typo="Typo.body2" Color="Color.Secondary">@experience.Period</MudText>
+                                    <MudText Typo="Typo.subtitle1">@experience.Company</MudText>
+                                </MudCardHeaderContent>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                <MudExpansionPanels>
+                                    @foreach (var project in experience.Projects)
+                                    {
+                                        <MudExpansionPanel>
+                                            <TitleContent>
+                                                <MudText Typo="Typo.h6">@project.Title</MudText>
+                                            </TitleContent>
+                                            <ChildContent>
+                                                <div class="pa-2">
+                                                    @foreach (var achievement in project.Achievements)
+                                                    {
+                                                        <div class="d-flex align-center mb-2">
+                                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Primary"
+                                                                Size="Size.Small" Class="mr-2" />
+                                                            <MudText>@achievement</MudText>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </ChildContent>
+                                        </MudExpansionPanel>
+                                    }
+                                </MudExpansionPanels>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudTimelineItem>
+                }
+            </MudTimeline>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.h4" Class="mb-4">Education</MudText>
+            <MudCard Elevation="2">
+                <MudCardContent>
+                    <MudText Typo="Typo.h6">Bachelor of Science in Engineering</MudText>
+                    <MudText Typo="Typo.subtitle1">Western Michigan University, Kalamazoo, MI</MudText>
+                    <MudText Typo="Typo.body2">Graduated: December 2019 | GPA: 3.50</MudText>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudText Typo="Typo.h4" Class="mb-4">Additional Skills & Interests</MudText>
+            <MudGrid>
+                @foreach (var interest in interests)
+                {
+                    <MudItem xs="12" sm="6" md="3">
+                        <MudCard Elevation="2" Class="interest-card">
+                            <MudCardContent>
+                                <MudText>@interest</MudText>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code{
+    private List<SkillCategory> skillCategories = new()
+    {
+        new() { Name = "Backend", Skills = new() { new() { Name = "C#", Level = 95 }, new() { Name = ".NET", Level = 90 }, new() { Name = "Python", Level = 85 }, new() { Name = "SQL", Level = 90 }, new() { Name = "Microservices", Level = 85 } } },
+        new() { Name = "Frontend", Skills = new() { new() { Name = "Blazor", Level = 90 }, new() { Name = "JavaScript", Level = 85 }, new() { Name = "HTML/CSS", Level = 85 }, new() { Name = "Telerik", Level = 80 } } },
+        new() { Name = "DevOps & Tools", Skills = new() { new() { Name = "Git", Level = 90 }, new() { Name = "CI/CD", Level = 85 }, new() { Name = "Cloud Containers", Level = 80 }, new() { Name = "GitHub Copilot", Level = 90 } } }
+    };
+
+    private List<Experience> experiences = new()
+    {
+        new() { Title = "Senior Software Engineer", Company = "DataSystemServices", Period = "November 2024 – March 2025", Projects = new() { new() { Title = "Enterprise Web Portal Modernization", Achievements = new() { "Architected a comprehensive Blazor Server web app, delivering the first major homepage update in 20 years", "Optimized performance via load balancing, reducing load times by 40%", "Engineered seamless integration with existing subsystems" } }, new() { Title = "Automated API Testing Framework", Achievements = new() { "Developed automated .NET-based testing service reducing execution time from 1 hour to 10 seconds", "Increased testing frequency 240x through concurrent processing", "Reduced API-related incidents by 80%" } } } },
+        new() { Title = "Software Engineer", Company = "General Motors", Period = "July 2022 – August 2024", Projects = new() { new() { Title = "Map Processing Microservice", Achievements = new() { "Architected high-performance .NET microservice for XML map data", "Achieved 30% reduction in data processing time", "Designed RESTful APIs for downstream service integration" } }, new() { Title = "Geofencing System Modernization", Achievements = new() { "Led migration from Python to modern C#.NET architecture", "Improved performance by 60% through parallel processing", "Achieved 90% unit test coverage" } } } },
+        new() { Title = "Data Engineer", Company = "General Motors", Period = "July 2020 – July 2022", Projects = new() { new() { Title = "Data Engineering Achievements", Achievements = new() { "Developed automated data processing system reducing manual work by 75%", "Architected production timing tool resulting in $250k annual savings", "Created scalable SharePoint solutions with custom forms and workflows" } } } }
+    };
+
+    private List<string> interests = new() { "IoT projects using Microcontrollers and CircuitPython", "3D Printing and CAD Design", "Technical Writing and Documentation", "Problem-Solving through Lock Sport and Circuit Design" };
+}
