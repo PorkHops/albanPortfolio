@@ -112,20 +112,132 @@
     </MudGrid>
 </MudContainer>
 
-@code{
+@code
+{
     private List<SkillCategory> skillCategories = new()
     {
-        new() { Name = "Backend", Skills = new() { new() { Name = "C#", Level = 95 }, new() { Name = ".NET", Level = 90 }, new() { Name = "Python", Level = 85 }, new() { Name = "SQL", Level = 90 }, new() { Name = "Microservices", Level = 85 } } },
-        new() { Name = "Frontend", Skills = new() { new() { Name = "Blazor", Level = 90 }, new() { Name = "JavaScript", Level = 85 }, new() { Name = "HTML/CSS", Level = 85 }, new() { Name = "Telerik", Level = 80 } } },
-        new() { Name = "DevOps & Tools", Skills = new() { new() { Name = "Git", Level = 90 }, new() { Name = "CI/CD", Level = 85 }, new() { Name = "Cloud Containers", Level = 80 }, new() { Name = "GitHub Copilot", Level = 90 } } }
+        new()
+        {
+            Name = "Backend",
+            Skills = new()
+            {
+                new() { Name = "C#", Level = 95 },
+                new() { Name = ".NET", Level = 90 },
+                new() { Name = "Python", Level = 85 },
+                new() { Name = "SQL", Level = 90 },
+                new() { Name = "Microservices", Level = 85 }
+            }
+        },
+        new()
+        {
+            Name = "Frontend",
+            Skills = new()
+            {
+                new() { Name = "Blazor", Level = 90 },
+                new() { Name = "JavaScript", Level = 85 },
+                new() { Name = "HTML/CSS", Level = 85 },
+                new() { Name = "Telerik", Level = 80 }
+            }
+        },
+        new()
+        {
+            Name = "DevOps & Tools",
+            Skills = new()
+            {
+                new() { Name = "Git", Level = 90 },
+                new() { Name = "CI/CD", Level = 85 },
+                new() { Name = "Cloud Containers", Level = 80 },
+                new() { Name = "GitHub Copilot", Level = 90 }
+            }
+        }
     };
 
     private List<Experience> experiences = new()
     {
-        new() { Title = "Senior Software Engineer", Company = "DataSystemServices", Period = "November 2024 – March 2025", Projects = new() { new() { Title = "Enterprise Web Portal Modernization", Achievements = new() { "Architected a comprehensive Blazor Server web app, delivering the first major homepage update in 20 years", "Optimized performance via load balancing, reducing load times by 40%", "Engineered seamless integration with existing subsystems" } }, new() { Title = "Automated API Testing Framework", Achievements = new() { "Developed automated .NET-based testing service reducing execution time from 1 hour to 10 seconds", "Increased testing frequency 240x through concurrent processing", "Reduced API-related incidents by 80%" } } } },
-        new() { Title = "Software Engineer", Company = "General Motors", Period = "July 2022 – August 2024", Projects = new() { new() { Title = "Map Processing Microservice", Achievements = new() { "Architected high-performance .NET microservice for XML map data", "Achieved 30% reduction in data processing time", "Designed RESTful APIs for downstream service integration" } }, new() { Title = "Geofencing System Modernization", Achievements = new() { "Led migration from Python to modern C#.NET architecture", "Improved performance by 60% through parallel processing", "Achieved 90% unit test coverage" } } } },
-        new() { Title = "Data Engineer", Company = "General Motors", Period = "July 2020 – July 2022", Projects = new() { new() { Title = "Data Engineering Achievements", Achievements = new() { "Developed automated data processing system reducing manual work by 75%", "Architected production timing tool resulting in $250k annual savings", "Created scalable SharePoint solutions with custom forms and workflows" } } } }
+        new()
+        {
+            Title    = "Senior Software Engineer",
+            Company  = "DataSystemServices",
+            Period   = "November 2024 – March 2025",
+            Projects = new()
+            {
+                new()
+                {
+                    Title        = "Enterprise Web Portal Modernization",
+                    Achievements = new()
+                    {
+                        "Architected a comprehensive Blazor Server web app, delivering the first major homepage update in 20 years",
+                        "Optimized performance via load balancing, reducing load times by 40%",
+                        "Engineered seamless integration with existing subsystems"
+                    }
+                },
+                new()
+                {
+                    Title        = "Automated API Testing Framework",
+                    Achievements = new()
+                    {
+                        "Developed automated .NET-based testing service reducing execution time from 1 hour to 10 seconds",
+                        "Increased testing frequency 240x through concurrent processing",
+                        "Reduced API-related incidents by 80%"
+                    }
+                }
+            }
+        },
+        new()
+        {
+            Title = "Software Engineer",
+            Company = "General Motors",
+            Period = "July 2022 – August 2024",
+            Projects = new()
+            {
+                new()
+                {
+                    Title = "Map Processing Microservice",
+                    Achievements = new()
+                    {
+                        "Architected high-performance .NET microservice for XML map data",
+                        "Achieved 30% reduction in data processing time",
+                        "Designed RESTful APIs for downstream service integration"
+                    }
+                },
+                new()
+                {
+                    Title = "Geofencing System Modernization",
+                    Achievements = new()
+                    {
+                        "Led migration from Python to modern C#.NET architecture",
+                        "Improved performance by 60% through parallel processing",
+                        "Achieved 90% unit test coverage"
+                    }
+                }
+            }
+        },
+        new()
+        {
+            Title = "Data Engineer",
+            Company = "General Motors",
+            Period = "July 2020 – July 2022",
+            Projects = new()
+            {
+                new()
+                {
+                    Title = "Data Engineering Achievements",
+                    Achievements = new()
+                    {
+                        "Developed automated data processing system reducing manual work by 75%",
+                        "Architected production timing tool resulting in $250k annual savings",
+                        "Created scalable SharePoint solutions with custom forms and workflows"
+                    }
+                }
+            }
+        }
     };
 
-    private List<string> interests = new() { "IoT projects using Microcontrollers and CircuitPython", "3D Printing and CAD Design", "Technical Writing and Documentation", "Problem-Solving through Lock Sport and Circuit Design" };
+    private List<string> interests = new()
+    {
+        "IoT projects using Microcontrollers and CircuitPython",
+        "3D Printing and CAD Design",
+        "Technical Writing and Documentation",
+        "Problem-Solving through Lock Sport and Circuit Design"
+    };
 }

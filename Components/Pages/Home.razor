@@ -99,9 +99,9 @@
 </MudContainer>
 
 @code {
-    private List<Skill> backendSkills = new List<Skill>();
+    private List<Skill> backendSkills  = new List<Skill>();
     private List<Skill> frontendSkills = new List<Skill>();
-    private List<Skill> toolSkills = new List<Skill>();
+    private List<Skill> toolSkills     = new List<Skill>();
 
     protected override Task OnInitializedAsync()
     {
@@ -113,18 +113,18 @@
     {
         try
         {
-            var filePath = Path.Combine(Environment.ContentRootPath, "Components", "Utils", "Skills.json");
-            Console.WriteLine($"Loading skills from: {filePath}");
+            var filePath   = Path.Combine(Environment.ContentRootPath, "Components", "Utils", "Skills.json");
             var jsonString = File.ReadAllText(filePath);
-            var response = JsonSerializer.Deserialize<SkillsData>(jsonString, new JsonSerializerOptions
+            var response   = JsonSerializer.Deserialize<SkillsData>(jsonString, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });
+
             if (response?.Skills != null)
             {
                 frontendSkills = response.Skills.Frontend;
-                backendSkills = response.Skills.Backend;
-                toolSkills = response.Skills.Tools;
+                backendSkills  = response.Skills.Backend;
+                toolSkills     = response.Skills.Tools;
             }
         }
         catch (Exception ex)
@@ -141,8 +141,8 @@
     public class Skills
     {
         public List<Skill> Frontend { get; set; } = new();
-        public List<Skill> Backend { get; set; } = new();
-        public List<Skill> Tools { get; set; } = new();
+        public List<Skill> Backend { get; set; }  = new();
+        public List<Skill> Tools { get; set; }    = new();
     }
 
     public class Skill
@@ -152,9 +152,9 @@
         public int Years { get; set; }
         public string Color => Level switch
         {
-            "Advanced" => "Success",
+            "Advanced"     => "Success",
             "Intermediate" => "Info",
-            _ => "Primary"
+            _              => "Primary"
         };
     }
 }

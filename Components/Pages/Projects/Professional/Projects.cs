@@ -17,7 +17,7 @@ public static class ProjectsData
 {
     public static List<Project> Projects =
     [
-        new Project
+        new()
         {
             Title = "Automated API Testing Framework",
             Description = "Our company utilized numerous APIs that required regular stability testing. "
@@ -51,7 +51,7 @@ public static class ProjectsData
                         "Validated responses against success criteria or expected response templates for failure test cases"
                     ]
                 },
-                new ProjectSection
+                new()
                 {
                     Title = "Results Management",
                     Bullets =
@@ -61,7 +61,7 @@ public static class ProjectsData
                         "Distributed results via SmtpClient"
                     ]
                 },
-                new ProjectSection
+                new()
                 {
                     Title = "Results & Impact",
                     Bullets =
@@ -77,7 +77,7 @@ public static class ProjectsData
             ]
         },
 
-        new Project
+        new()
         {
             Title = "Enterprise Portal Modernization",
             Description = "The company operated a comprehensive web portal that served as the centralized hub for diverse business functions "
@@ -86,7 +86,7 @@ public static class ProjectsData
             + "rebuilding the system from the ground up.",
             Sections =
             [
-                new ProjectSection
+                new()
                 {
                     Title = "Discovery & Analysis",
                     Bullets =
@@ -98,7 +98,7 @@ public static class ProjectsData
                         "Confirmed leadership's commitment to maintaining a '1-Click-Away' navigation philosophy"
                     ]
                 },
-                new ProjectSection
+                new()
                 {
                     Title = "Technical Planning",
                     Bullets =
@@ -111,7 +111,7 @@ public static class ProjectsData
                         "Reduce processing demands on legacy client machines still in use throughout the organization"
                     ]
                 },
-                new ProjectSection
+                new()
                 {
                     Title = "Implementation",
                     Bullets =
@@ -124,7 +124,7 @@ public static class ProjectsData
                         "Created a single Container.razor page to manage all non-homepage content, supporting both menu-based navigation and URL parameter access"
                     ]
                 },
-                new ProjectSection
+                new()
                 {
                     Title = "Results",
                     Bullets =
