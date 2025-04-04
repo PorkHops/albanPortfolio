@@ -1,27 +1,35 @@
 ﻿@using MudBlazor
 @using MudBlazor.Components
 
-<MudPaper Width="100%"
-           Height="100%"
-           Class="py-3"
-           Elevation="0"
-           Style="background-color: transparent">
-    <MudNavMenu Color="Color.Inherit"
-                Rounded="true"
-                Dense="true"
-                Class="px-2"
-                Margin="Margin.Dense">
-        <MudNavLink Href=""
-                   Icon="@Icons.Material.Filled.Home"
-                   Class="rounded-lg"
-                   ActiveClass="active-nav-link">Home</MudNavLink>
-        <MudNavLink Href="resume"
-                   Icon="@Icons.Material.Filled.Article"
-                   Class="rounded-lg"
-                   ActiveClass="active-nav-link">Resume</MudNavLink>
-        <MudNavLink Href="/projectsProfessional"
-                   Icon="@Icons.Material.Filled.Business"
-                   Class="rounded-lg"
-                   ActiveClass="active-nav-link">Projects</MudNavLink>
-    </MudNavMenu>
-</MudPaper>
+<div class="d-flex align-center">
+    <MudNavLink Href=""
+               Icon="@Icons.Material.Filled.Home"
+               Class="rounded-lg px-3"
+               ActiveClass="active-nav-link">
+        Home
+    </MudNavLink>
+    <MudNavLink Href="resume"
+               Icon="@Icons.Material.Filled.Article"
+               Class="rounded-lg px-3"
+               ActiveClass="active-nav-link">
+        Resume
+    </MudNavLink>
+    <MudNavLink Href="/projectsProfessional"
+               Icon="@Icons.Material.Filled.Business"
+               Class="rounded-lg px-3"
+               ActiveClass="active-nav-link">
+        Projects
+    </MudNavLink>
+    <MudNavLink Href="/"
+               Icon="@Icons.Material.Filled.PlayArrow"
+               Class="rounded-lg px-3"
+               ActiveClass="active-nav-link">
+        Demos
+    </MudNavLink>
+    <MudNavLink Href="/"
+               Icon="@Icons.Material.Filled.Email"
+               Class="rounded-lg px-3"
+               ActiveClass="active-nav-link">
+        Contact
+    </MudNavLink>
+</div>
