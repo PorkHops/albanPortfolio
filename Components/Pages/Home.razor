@@ -24,21 +24,20 @@
 
     <!-- Skills Section -->
     <MudText Typo="Typo.h4" Class="mb-4">Technical Skills</MudText>
-    <MudGrid Class="mb-8">
-        <MudItem xs="12" sm="6" md="4">
-            <MudPaper Class="pa-4" Elevation="2">
+    <MudGrid Class="mb-8" Justify="Justify.Center">
+        <MudItem xs="12" sm="12" md="4" Class="d-flex justify-center">
+            <MudPaper Class="pa-4" Elevation="2" Style="width: 100%; max-width: 350px;">
                 <MudText Typo="Typo.h6" Class="mb-2">Frontend Development</MudText>
                 <MudChipSet T="string">
                     @foreach (var skill in frontendSkills)
                     {
                         <MudChip Color="@(Enum.Parse<Color>(skill.Color))" Variant="Variant.Text">@skill.Name</MudChip>
-                        @* <MudChip Color="@(Enum.Parse<Color>(skill.Color))" Variant="Variant.Text">@skill.Name (@skill.Level)</MudChip> *@
                     }
                 </MudChipSet>
             </MudPaper>
         </MudItem>
-        <MudItem xs="12" sm="6" md="4">
-            <MudPaper Class="pa-4" Elevation="2">
+        <MudItem xs="12" sm="12" md="4" Class="d-flex justify-center">
+            <MudPaper Class="pa-4" Elevation="2" Style="width: 100%; max-width: 350px;">
                 <MudText Typo="Typo.h6" Class="mb-2">Backend Development</MudText>
                 <MudChipSet T="string">
                     @foreach (var skill in backendSkills)
@@ -48,8 +47,8 @@
                 </MudChipSet>
             </MudPaper>
         </MudItem>
-        <MudItem xs="12" sm="6" md="4">
-            <MudPaper Class="pa-4" Elevation="2">
+        <MudItem xs="12" sm="12" md="4" Class="d-flex justify-center">
+            <MudPaper Class="pa-4" Elevation="2" Style="width: 100%; max-width: 350px;">
                 <MudText Typo="Typo.h6" Class="mb-2">Tools & Technologies</MudText>
                 <MudChipSet T="string">
                     @foreach (var skill in toolSkills)
