@@ -1,157 +1,82 @@
-﻿@page "/resume"
-@using MudBlazor
+﻿@using MudBlazor
 @using albanPortfolio.Components.Models
 @rendermode InteractiveServer
 
-<PageTitle>Resume - Alban</PageTitle>
-
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
-    <MudPaper Class="pa-4 mb-4" Elevation="0">
-        <MudText Typo="Typo.h2" Align="Align.Center" Class="mb-4">Senior Software Engineer</MudText>
-        <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Secondary">
-            Full-stack developer specializing in .NET, Blazor, and modern web technologies
-        </MudText>
-    </MudPaper>
-
-    <MudGrid>
-        <MudItem xs="12">
-            <MudText Typo="Typo.h4" Class="mb-4">Technical Skills</MudText>
-            <MudGrid>
-                @foreach (var category in skillCategories)
-                {
-                    <MudItem xs="12" md="4">
-                        <MudCard Elevation="0" Class="mb-4">
-                            <MudCardHeader>
-                                <MudText Typo="Typo.h6">@category.Name</MudText>
-                            </MudCardHeader>
-                            <MudCardContent>
-                                @foreach (var skill in category.Skills)
+<MudGrid>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h4" Class="mb-4">Professional Experience</MudText>
+        <MudTimeline>
+            @foreach (var experience in experiences)
+            {
+                <MudTimelineItem Color="Color.Primary">
+                    <MudCard Elevation="2" Class="mb-4">
+                        <MudCardHeader>
+                            <MudCardHeaderContent>
+                                <MudText Typo="Typo.h6">@experience.Title</MudText>
+                                <MudText Typo="Typo.body2" Color="Color.Secondary">@experience.Period</MudText>
+                                <MudText Typo="Typo.subtitle1">@experience.Company</MudText>
+                            </MudCardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudExpansionPanels>
+                                @foreach (var project in experience.Projects)
                                 {
-                                    <div class="mb-3">
-                                        <MudText Class="mb-2">@skill.Name</MudText>
-                                        <MudProgressLinear Color="Color.Primary" Value="@skill.Level" Class="my-2" />
-                                    </div>
+                                    <MudExpansionPanel>
+                                        <TitleContent>
+                                            <MudText Typo="Typo.h6">@project.Title</MudText>
+                                        </TitleContent>
+                                        <ChildContent>
+                                            <div class="pa-2">
+                                                @foreach (var achievement in project.Achievements)
+                                                {
+                                                    <div class="d-flex align-center mb-2">
+                                                        <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Primary"
+                                                            Size="Size.Small" Class="mr-2" />
+                                                        <MudText>@achievement</MudText>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </ChildContent>
+                                    </MudExpansionPanel>
                                 }
-                            </MudCardContent>
-                        </MudCard>
-                    </MudItem>
-                }
-            </MudGrid>
-        </MudItem>
+                            </MudExpansionPanels>
+                        </MudCardContent>
+                    </MudCard>
+                </MudTimelineItem>
+            }
+        </MudTimeline>
+    </MudItem>
 
-        <MudItem xs="12">
-            <MudText Typo="Typo.h4" Class="mb-4">Professional Experience</MudText>
-            <MudTimeline>
-                @foreach (var experience in experiences)
-                {
-                    <MudTimelineItem Color="Color.Primary">
-                        <MudCard Elevation="2" Class="mb-4">
-                            <MudCardHeader>
-                                <MudCardHeaderContent>
-                                    <MudText Typo="Typo.h6">@experience.Title</MudText>
-                                    <MudText Typo="Typo.body2" Color="Color.Secondary">@experience.Period</MudText>
-                                    <MudText Typo="Typo.subtitle1">@experience.Company</MudText>
-                                </MudCardHeaderContent>
-                            </MudCardHeader>
-                            <MudCardContent>
-                                <MudExpansionPanels>
-                                    @foreach (var project in experience.Projects)
-                                    {
-                                        <MudExpansionPanel>
-                                            <TitleContent>
-                                                <MudText Typo="Typo.h6">@project.Title</MudText>
-                                            </TitleContent>
-                                            <ChildContent>
-                                                <div class="pa-2">
-                                                    @foreach (var achievement in project.Achievements)
-                                                    {
-                                                        <div class="d-flex align-center mb-2">
-                                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Primary"
-                                                                Size="Size.Small" Class="mr-2" />
-                                                            <MudText>@achievement</MudText>
-                                                        </div>
-                                                    }
-                                                </div>
-                                            </ChildContent>
-                                        </MudExpansionPanel>
-                                    }
-                                </MudExpansionPanels>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudTimelineItem>
-                }
-            </MudTimeline>
-        </MudItem>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h4" Class="mb-4">Education</MudText>
+        <MudCard Elevation="2">
+            <MudCardContent>
+                <MudText Typo="Typo.h6">Bachelor of Science in Engineering</MudText>
+                <MudText Typo="Typo.subtitle1">Western Michigan University, Kalamazoo, MI</MudText>
+                <MudText Typo="Typo.body2">Graduated: December 2019 | GPA: 3.50</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
 
-        <MudItem xs="12">
-            <MudText Typo="Typo.h4" Class="mb-4">Education</MudText>
-            <MudCard Elevation="2">
-                <MudCardContent>
-                    <MudText Typo="Typo.h6">Bachelor of Science in Engineering</MudText>
-                    <MudText Typo="Typo.subtitle1">Western Michigan University, Kalamazoo, MI</MudText>
-                    <MudText Typo="Typo.body2">Graduated: December 2019 | GPA: 3.50</MudText>
-                </MudCardContent>
-            </MudCard>
-        </MudItem>
-
-        <MudItem xs="12">
-            <MudText Typo="Typo.h4" Class="mb-4">Additional Skills & Interests</MudText>
-            <MudGrid>
-                @foreach (var interest in interests)
-                {
-                    <MudItem xs="12" sm="6" md="3">
-                        <MudCard Elevation="2" Class="interest-card">
-                            <MudCardContent>
-                                <MudText>@interest</MudText>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudItem>
-                }
-            </MudGrid>
-        </MudItem>
-    </MudGrid>
-</MudContainer>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h4" Class="mb-4">Additional Skills & Interests</MudText>
+        <MudGrid>
+            @foreach (var interest in interests)
+            {
+                <MudItem xs="12" sm="6" md="3">
+                    <MudCard Elevation="2" Class="interest-card">
+                        <MudCardContent>
+                            <MudText>@interest</MudText>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudItem>
+</MudGrid>
 
 @code
 {
-    private List<SkillCategory> skillCategories = new()
-    {
-        new()
-        {
-            Name = "Backend",
-            Skills = new()
-            {
-                new() { Name = "C#", Level = 95 },
-                new() { Name = ".NET", Level = 90 },
-                new() { Name = "Python", Level = 85 },
-                new() { Name = "SQL", Level = 90 },
-                new() { Name = "Microservices", Level = 85 }
-            }
-        },
-        new()
-        {
-            Name = "Frontend",
-            Skills = new()
-            {
-                new() { Name = "Blazor", Level = 90 },
-                new() { Name = "JavaScript", Level = 85 },
-                new() { Name = "HTML/CSS", Level = 85 },
-                new() { Name = "Telerik", Level = 80 }
-            }
-        },
-        new()
-        {
-            Name = "DevOps & Tools",
-            Skills = new()
-            {
-                new() { Name = "Git", Level = 90 },
-                new() { Name = "CI/CD", Level = 85 },
-                new() { Name = "Cloud Containers", Level = 80 },
-                new() { Name = "GitHub Copilot", Level = 90 }
-            }
-        }
-    };
-
     private List<Experience> experiences = new()
     {
         new()

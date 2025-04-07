@@ -1,17 +1,5 @@
 namespace albanPortfolio.Components.Models;
 
-public class Skill
-{
-    public string Name { get; set; }
-    public int Level { get; set; }
-}
-
-public class SkillCategory
-{
-    public string Name { get; set; }
-    public List<Skill> Skills { get; set; }
-}
-
 public class Project
 {
     public string Title { get; set; }

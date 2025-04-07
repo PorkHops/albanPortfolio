@@ -10,14 +10,16 @@
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
     <!-- Me Section :) -->
-    <MudPaper Elevation="0" Class="pa-8 mb-8" Style="background-color: var(--mud-palette-background-grey);">
-        <MudText Typo="Typo.h3" Class="mb-4">Welcome to My Portfolio</MudText>
-        <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Full Stack Developer & Software Engineer</MudText>
+    <MudPaper Class="pa-4 mb-4" Elevation="2">
+        <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-4">Sr. Software Engineer & Full-stack Developer</MudText>
+        <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Primary" Class="mb-4">
+            SWE specializing in .NET, Blazor, and Windows Services.
+        </MudText>
         <MudText Typo="Typo.body1" Class="mb-4">
-            I'm passionate about creating elegant solutions to complex problems. With expertise in modern web technologies
+            Welcome to My Portfolio! My name is Alban Shekaj. I am a software developer passionate about creating elegant
+            solutions to complex problems. With expertise in modern web technologies
             and software development best practices, I bring ideas to life through clean, efficient, and maintainable code.
         </MudText>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Href="resume">View Resume</MudButton>
     </MudPaper>
 
     <!-- Skills Section -->
@@ -59,36 +61,9 @@
         </MudItem>
     </MudGrid>
 
-    <!-- Featured Projects -->
-    <MudText Typo="Typo.h4" Class="mb-4">Featured Projects</MudText>
-    <MudGrid Class="mb-8">
-        <MudItem xs="12" sm="6">
-            <MudCard Elevation="2">
-                <MudCardHeader>
-                    <MudText Typo="Typo.h6">E-Commerce Platform</MudText>
-                </MudCardHeader>
-                <MudCardContent>
-                    <MudText>A full-stack e-commerce solution built with .NET Core and React, featuring real-time inventory management and secure payment processing.</MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-        <MudItem xs="12" sm="6">
-            <MudCard Elevation="2">
-                <MudCardHeader>
-                    <MudText Typo="Typo.h6">Task Management System</MudText>
-                </MudCardHeader>
-                <MudCardContent>
-                    <MudText>A collaborative task management application built with Blazor and SQL Server, featuring real-time updates and team collaboration tools.</MudText>
-                </MudCardContent>
-                <MudCardActions>
-                    <MudButton Variant="Variant.Text" Color="Color.Primary">Learn More</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-    </MudGrid>
+    <!-- Resume Section -->
+    <Resume />
+    <br />
 
     <!-- Contact Section -->
     <MudText Typo="Typo.h4" Class="mb-4">Let's Connect</MudText>
