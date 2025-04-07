@@ -12,7 +12,7 @@
     <!-- Me Section :) -->
     <MudPaper Class="pa-4 mb-4" Elevation="2">
         <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-4">Sr. Software Engineer & Full-stack Developer</MudText>
-        <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Primary" Class="mb-4">
+        <MudText Typo="Typo.h5" Align="Align.Center" Color="Color.Success" Class="mb-4">
             SWE specializing in .NET, Blazor, and Windows Services.
         </MudText>
         <MudText Typo="Typo.body1" Class="mb-4">
@@ -31,7 +31,7 @@
                 <MudChipSet T="string">
                     @foreach (var skill in frontendSkills)
                     {
-                        <MudChip Color="@(Enum.Parse<Color>(skill.Color))" Variant="Variant.Text">@skill.Name</MudChip>
+                        <MudChip Color="Color.Success" Variant="Variant.Text">@skill.Name</MudChip>
                     }
                 </MudChipSet>
             </MudPaper>
@@ -42,7 +42,7 @@
                 <MudChipSet T="string">
                     @foreach (var skill in backendSkills)
                     {
-                        <MudChip Color="@(Enum.Parse<Color>(skill.Color))" Variant="Variant.Text">@skill.Name</MudChip>
+                        <MudChip Color="Color.Primary" Variant="Variant.Text">@skill.Name</MudChip>
                     }
                 </MudChipSet>
             </MudPaper>
@@ -53,7 +53,7 @@
                 <MudChipSet T="string">
                     @foreach (var skill in toolSkills)
                     {
-                        <MudChip Color="@(Enum.Parse<Color>(skill.Color))" Variant="Variant.Text">@skill.Name</MudChip>
+                        <MudChip Color="Color.Success" Variant="Variant.Text">@skill.Name</MudChip>
                     }
                 </MudChipSet>
             </MudPaper>
