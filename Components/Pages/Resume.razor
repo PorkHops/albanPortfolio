@@ -5,46 +5,90 @@
 <MudGrid>
     <MudItem xs="12">
         <MudText Typo="Typo.h4" Class="mb-4">Professional Experience</MudText>
-        <MudTimeline>
+
+        @* Timeline view for md and up screens *@
+        <div class="d-none d-md-block">
+            <MudTimeline>
+                @foreach (var experience in experiences)
+                {
+                    <MudTimelineItem Color="Color.Primary">
+                        <MudCard Elevation="2" Class="mb-4">
+                            <MudCardHeader>
+                                <MudCardHeaderContent>
+                                    <MudText Typo="Typo.h6">@experience.Title</MudText>
+                                    <MudText Typo="Typo.body2" Color="Color.Success">@experience.Period</MudText>
+                                    <MudText Typo="Typo.subtitle1">@experience.Company</MudText>
+                                </MudCardHeaderContent>
+                            </MudCardHeader>
+                            <MudCardContent>
+                                <MudExpansionPanels>
+                                    @foreach (var project in experience.Projects)
+                                    {
+                                        <MudExpansionPanel>
+                                            <TitleContent>
+                                                <MudText Typo="Typo.h6">@project.Title</MudText>
+                                            </TitleContent>
+                                            <ChildContent>
+                                                <div class="pa-2">
+                                                    @foreach (var achievement in project.Achievements)
+                                                    {
+                                                        <div class="d-flex align-center mb-2">
+                                                            <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Primary"
+                                                                Size="Size.Small" Class="mr-2" />
+                                                            <MudText>@achievement</MudText>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </ChildContent>
+                                        </MudExpansionPanel>
+                                    }
+                                </MudExpansionPanels>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudTimelineItem>
+                }
+            </MudTimeline>
+        </div>
+
+        @* Card view for xs and sm screens *@
+        <div class="d-block d-md-none">
             @foreach (var experience in experiences)
             {
-                <MudTimelineItem Color="Color.Primary">
-                    <MudCard Elevation="2" Class="mb-4">
-                        <MudCardHeader>
-                            <MudCardHeaderContent>
-                                <MudText Typo="Typo.h6">@experience.Title</MudText>
-                                <MudText Typo="Typo.body2" Color="Color.Success">@experience.Period</MudText>
-                                <MudText Typo="Typo.subtitle1">@experience.Company</MudText>
-                            </MudCardHeaderContent>
-                        </MudCardHeader>
-                        <MudCardContent>
-                            <MudExpansionPanels>
-                                @foreach (var project in experience.Projects)
-                                {
-                                    <MudExpansionPanel>
-                                        <TitleContent>
-                                            <MudText Typo="Typo.h6">@project.Title</MudText>
-                                        </TitleContent>
-                                        <ChildContent>
-                                            <div class="pa-2">
-                                                @foreach (var achievement in project.Achievements)
-                                                {
-                                                    <div class="d-flex align-center mb-2">
-                                                        <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Primary"
-                                                            Size="Size.Small" Class="mr-2" />
-                                                        <MudText>@achievement</MudText>
-                                                    </div>
-                                                }
-                                            </div>
-                                        </ChildContent>
-                                    </MudExpansionPanel>
-                                }
-                            </MudExpansionPanels>
-                        </MudCardContent>
-                    </MudCard>
-                </MudTimelineItem>
+                <MudCard Elevation="2" Class="mb-4">
+                    <MudCardHeader>
+                        <MudCardHeaderContent>
+                            <MudText Typo="Typo.h6">@experience.Title</MudText>
+                            <MudText Typo="Typo.body2" Color="Color.Success">@experience.Period</MudText>
+                            <MudText Typo="Typo.subtitle1">@experience.Company</MudText>
+                        </MudCardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudExpansionPanels>
+                            @foreach (var project in experience.Projects)
+                            {
+                                <MudExpansionPanel>
+                                    <TitleContent>
+                                        <MudText Typo="Typo.h6">@project.Title</MudText>
+                                    </TitleContent>
+                                    <ChildContent>
+                                        <div class="pa-2">
+                                            @foreach (var achievement in project.Achievements)
+                                            {
+                                                <div class="d-flex align-center mb-2">
+                                                    <MudIcon Icon="@Icons.Material.Filled.Check" Color="Color.Primary"
+                                                        Size="Size.Small" Class="mr-2" />
+                                                    <MudText>@achievement</MudText>
+                                                </div>
+                                            }
+                                        </div>
+                                    </ChildContent>
+                                </MudExpansionPanel>
+                            }
+                        </MudExpansionPanels>
+                    </MudCardContent>
+                </MudCard>
             }
-        </MudTimeline>
+        </div>
     </MudItem>
 
     <MudItem xs="12">
