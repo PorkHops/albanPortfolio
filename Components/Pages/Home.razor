@@ -27,9 +27,9 @@
     <MudGrid Class="mb-8" Justify="Justify.Center">
         <MudItem xs="12" sm="12" md="4" Class="d-flex justify-center">
             <MudPaper Class="pa-4" Elevation="2" Style="width: 100%; max-width: 350px;">
-                <MudText Typo="Typo.h6" Class="mb-2">Frontend Development</MudText>
+                <MudText Typo="Typo.h6" Class="mb-2">Backend Development</MudText>
                 <MudChipSet T="string">
-                    @foreach (var skill in frontendSkills)
+                    @foreach (var skill in backendSkills)
                     {
                         <MudChip Color="Color.Success" Variant="Variant.Text">@skill.Name</MudChip>
                     }
@@ -38,9 +38,9 @@
         </MudItem>
         <MudItem xs="12" sm="12" md="4" Class="d-flex justify-center">
             <MudPaper Class="pa-4" Elevation="2" Style="width: 100%; max-width: 350px;">
-                <MudText Typo="Typo.h6" Class="mb-2">Backend Development</MudText>
+                <MudText Typo="Typo.h6" Class="mb-2">Frontend Development</MudText>
                 <MudChipSet T="string">
-                    @foreach (var skill in backendSkills)
+                    @foreach (var skill in frontendSkills)
                     {
                         <MudChip Color="Color.Primary" Variant="Variant.Text">@skill.Name</MudChip>
                     }
