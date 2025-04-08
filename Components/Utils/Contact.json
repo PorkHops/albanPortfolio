@@ -1,21 +1,21 @@
 {
   "socialLinks": [
     {
-      "name": "GitHub",
-      "icon": "github",
-      "url": "https://github.com/PorkHops",
+      "name" : "GitHub",
+      "icon" : "github",
+      "url"  : "https://github.com/PorkHops",
       "color": "Default"
     },
     {
-      "name": "LinkedIn",
-      "icon": "linkedin",
-      "url": "https://www.linkedin.com/in/alban-shekaj/",
+      "name" : "LinkedIn",
+      "icon" : "linkedin",
+      "url"  : "https://www.linkedin.com/in/alban-shekaj/",
       "color": "Info"
     },
     {
-      "name": "Email",
-      "icon": "email",
-      "url": "mailto:alban.shekaj@gmail.com",
+      "name" : "Email",
+      "icon" : "email",
+      "url"  : "mailto:alban.shekaj@gmail.com",
       "color": "Secondary"
     }
   ]

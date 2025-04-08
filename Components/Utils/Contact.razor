@@ -6,11 +6,11 @@
 <MudStack Row="true" Justify="@Justify" Spacing="4">
     @foreach (var link in socialLinks)
     {
-        <MudIconButton Icon="@link.GetIconString()"
-                       Color="@(Enum.Parse<Color>(link.Color))"
-                       Size="@Size"
-                       Href="@link.Url"
-                       Target="_blank" />
+        <MudIconButton Icon   = "@link.GetIconString()"
+                       Color  = "@(Enum.Parse<Color>(link.Color))"
+                       Size   = "@Size"
+                       Href   = "@link.Url"
+                       Target = "_blank" />
     }
 </MudStack>
 
@@ -54,17 +54,19 @@
     {
         try
         {
-            var filePath = Path.Combine(Environment.ContentRootPath, "Components", "Utils", "Contact.json");
-            Console.WriteLine($"Loading contact info from: {filePath}");
+            var filePath   = Path.Combine(Environment.ContentRootPath, "Components", "Utils", "Contact.json");
             var jsonString = File.ReadAllText(filePath);
-            var response = JsonSerializer.Deserialize<ContactData>(jsonString, new JsonSerializerOptions
+            var response   = JsonSerializer.Deserialize<ContactData>(jsonString, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             });
+
             if (response?.SocialLinks != null)
             {
                 socialLinks = response.SocialLinks;
             }
+
+            Console.WriteLine($"Loading contact info from: {filePath}");
         }
         catch (Exception ex)
         {

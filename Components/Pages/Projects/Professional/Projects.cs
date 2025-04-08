@@ -19,7 +19,7 @@ public static class ProjectsData
     [
         new()
         {
-            Title = "Automated API Testing Framework",
+            Title       = "Automated API Testing Framework",
             Description = "Our company utilized numerous APIs that required regular stability testing. "
                 + "The existing process involved an engineer manually running tests through Telerik Fiddler hourly - "
                 + "executing each API test individually, waiting for completion, and then analyzing results for errors. "
@@ -27,11 +27,11 @@ public static class ProjectsData
                 + "I discovered that Fiddler's session files (.saz format) were essentially zip archives containing plain text files of the APIs and their expected outputs. "
                 + "This insight significantly simplified the project approach.<br /><br />"
                 + "I developed a Windows service to run on a company server that performed the following:",
-            Sections =
+            Sections    =
             [
                 new()
                 {
-                    Title = "API Information Extraction",
+                    Title   = "API Information Extraction",
                     Bullets =
                     [
                         "Unpacked the SAZ file to local storage",
@@ -41,7 +41,7 @@ public static class ProjectsData
                 },
                 new()
                 {
-                    Title = "Request Processing",
+                    Title   = "Request Processing",
                     Bullets =
                     [
                         "Everything beyond this point was Implemented with Multithreaded Architecture using Semaphore",
@@ -53,7 +53,7 @@ public static class ProjectsData
                 },
                 new()
                 {
-                    Title = "Results Management",
+                    Title   = "Results Management",
                     Bullets =
                     [
                         "Configured automated alert emails to stakeholders when tests failed (timeout, incorrect response, etc.)",
@@ -63,7 +63,7 @@ public static class ProjectsData
                 },
                 new()
                 {
-                    Title = "Results & Impact",
+                    Title   = "Results & Impact",
                     Bullets =
                     [
                         "The service completed full testing cycles in approximately 10-15 seconds (excluding occasional extended response times)",
@@ -79,16 +79,16 @@ public static class ProjectsData
 
         new()
         {
-            Title = "Enterprise Portal Modernization",
+            Title       = "Enterprise Portal Modernization",
             Description = "The company operated a comprehensive web portal that served as the centralized hub for diverse business functions "
-            + "(ticketing, BOM creation/viewing, order maintenance, HR activities, etc.). This critical system had remained largely unchanged "
-            + "for over 20 years and was still running on .NET Framework 4.8. I was assigned the responsibility of completely redesigning and "
-            + "rebuilding the system from the ground up.",
-            Sections =
+                          + "(ticketing, BOM creation/viewing, order maintenance, HR activities, etc.). This critical system had remained largely unchanged "
+                          + "for over 20 years and was still running on .NET Framework 4.8. I was assigned the responsibility of completely redesigning and "
+                          + "rebuilding the system from the ground up.",
+            Sections    =
             [
                 new()
                 {
-                    Title = "Discovery & Analysis",
+                    Title   = "Discovery & Analysis",
                     Bullets =
                     [
                         "Conducted thorough analysis of the existing system to establish core functional requirements",
@@ -100,7 +100,7 @@ public static class ProjectsData
                 },
                 new()
                 {
-                    Title = "Technical Planning",
+                    Title   = "Technical Planning",
                     Bullets =
                     [
                         "Developed efficient database access code to retrieve essential data (navigation menu items, homepage deliverables, etc.)",
@@ -113,7 +113,7 @@ public static class ProjectsData
                 },
                 new()
                 {
-                    Title = "Implementation",
+                    Title   = "Implementation",
                     Bullets =
                     [
                         "Designed a visually appealing, intuitive navigation system",
@@ -126,7 +126,7 @@ public static class ProjectsData
                 },
                 new()
                 {
-                    Title = "Results",
+                    Title   = "Results",
                     Bullets =
                     [
                         "The modernized portal delivered a completely transformed user experience that received overwhelmingly positive feedback",
@@ -134,11 +134,28 @@ public static class ProjectsData
                     ]
                 }
             ]
-        }
+        },
+
+        // new()
+        // {
+        //     Title       = "",
+        //     Description = ""
+        //                   + "",
+        //     Sections    =
+        //     [
+        //         new()
+        //         {
+        //             Title   = "",
+        //             Bullets =
+        //             [
+        //                 ""
+        //             ]
+        //         }
+        //     ]
+        // }
 
         /*
-
-        */
         // Add more projects here as needed
+        */
     ];
 }

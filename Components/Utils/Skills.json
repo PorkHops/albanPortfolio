@@ -2,106 +2,106 @@
     "skills": {
         "backend": [
             {
-                "name": ".NET",
+                "name" : ".NET",
                 "level": "Advanced",
                 "years": 6
             },
             {
-                "name": "C#",
+                "name" : "C#",
                 "level": "Advanced",
                 "years": 5
             },
             {
-                "name": "Python",
+                "name" : "Python",
                 "level": "Intermediate",
                 "years": 6
             },
             {
-                "name": "SQL",
+                "name" : "SQL",
                 "level": "Advanced",
                 "years": 5
             },
             {
-                "name": "VBA",
+                "name" : "VBA",
                 "level": "Advanced",
                 "years": 6
             },
             {
-                "name": "PowerBI",
+                "name" : "PowerBI",
                 "level": "Advanced",
                 "years": 6
             },
             {
-                "name": "APIs",
+                "name" : "APIs",
                 "level": "Advanced",
                 "years": 6
             }
         ],
         "frontend": [
             {
-                "name": "Blazor",
+                "name" : "Blazor",
                 "level": "Advanced",
                 "years": 5
             },
             {
-                "name": "React",
+                "name" : "React",
                 "level": "Beginner",
                 "years": 1
             },
             {
-                "name": "JavaScript",
+                "name" : "JavaScript",
                 "level": "Intermediate",
                 "years": 2
             },
             {
-                "name": "CSS",
+                "name" : "CSS",
                 "level": "Advanced",
                 "years": 8
             }, 
             {
-                "name": "HTML",
+                "name" : "HTML",
                 "level": "Advanced",
                 "years": 8
             },
             {
-                "name": "Telerik",
+                "name" : "Telerik",
                 "level": "Advanced",
                 "years": 5
             }
         ],
         "tools": [
             {
-                "name": "Git",
+                "name" : "Git",
                 "level": "Advanced",
                 "years": 5
             },
             {
-                "name": "Docker",
+                "name" : "Docker",
                 "level": "Intermediate",
                 "years": 2
             },
             {
-                "name": "CI/CD",
+                "name" : "CI/CD",
                 "level": "Intermediate",
                 "years": 3
             },
             {
-                "name": "Azure",
+                "name" : "Azure",
                 "level": "Intermediate",
                 "years": 3
             },
             {
-                "name": "SCRUM",
+                "name" : "SCRUM",
                 "level": "Advanced",
                 "years": 6
             },
             {
-                "name": "DFFS Black Belt",
+                "name" : "DFFS Black Belt",
                 "level": "Advanced",
                 "years": 6
             },
             {
-                "name": "GenAI",
+                "name" : "GenAI",
                 "level": "Advanced",
                 "years": 3
             }
