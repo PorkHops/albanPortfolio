@@ -134,20 +134,20 @@ window.Hexdoku = {
     },
 
     checkAllErrors: function() {
-        if (!this.highlightErrorsEnabled || !this.dotNetHelper) {
-            // If highlighting is off, ensure all cells have default styling
-            if (!this.highlightErrorsEnabled) {
-                const cells = this.gridElement.querySelectorAll('input');
-                cells.forEach(cell => {
-                    if (!cell.readOnly) { // Only reset user-editable cells
-                       cell.style.backgroundColor = 'white';
-                       cell.style.color = 'black';
-                    } else {
-                       cell.style.backgroundColor = '#eee'; // Keep pre-filled style
-                       cell.style.color = 'black';
-                    }
-                });
-            }
+        if (!this.dotNetHelper) return; // Only return if no dotNetHelper
+        
+        // Reset styles if highlighting is off
+        if (!this.highlightErrorsEnabled) {
+            const cells = this.gridElement.querySelectorAll('input');
+            cells.forEach(cell => {
+                if (!cell.readOnly) { // Only reset user-editable cells
+                    cell.style.backgroundColor = 'white';
+                    cell.style.color = 'black';
+                } else {
+                    cell.style.backgroundColor = '#eee'; // Keep pre-filled style
+                    cell.style.color = 'black';
+                }
+            });
             return;
         }
 
@@ -171,10 +171,14 @@ window.Hexdoku = {
 
                     if (currentValue && currentValue !== correctValue) {
                         // Incorrect value entered
-                        cell.style.backgroundColor = 'lightcoral'; // Highlight background
+                        cell.style.backgroundColor = 'red'; // Bright red for errors
                         cell.style.color = 'white'; // Make text visible
+                    } else if (currentValue) {
+                        // Correct value
+                        cell.style.backgroundColor = 'white';
+                        cell.style.color = 'black';
                     } else {
-                        // Correct or empty
+                        // Empty cell
                         cell.style.backgroundColor = 'white';
                         cell.style.color = 'black';
                     }

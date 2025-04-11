@@ -26,7 +26,7 @@
              <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="LoadPuzzle" Class="mr-2 mb-2">Load Puzzle</MudButton>
              <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="SolvePuzzle" Class="mr-2 mb-2">Solve</MudButton>
              <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="ClearGrid" Class="mr-2 mb-2">Clear</MudButton>
-             <MudCheckBox T="bool" @bind-Checked="HighlightErrors" Label="Highlight Errors" Color="Color.Error" Class="mb-2"></MudCheckBox>
+             <MudCheckBox T="bool" @bind-Value="HighlightErrors" Label="Highlight Errors" Color="Color.Error" Class="mb-2"></MudCheckBox>
         </MudItem>
     </MudGrid>
 
