@@ -11,10 +11,7 @@
     gap: 0; /* No gap between cells */
 }
 
-/* Remove obsolete flexbox containers */
-.box-group, .sudoku-row, .box-col {
-    display: contents; /* Make these containers pass their children directly to the grid */
-}
+/* .box-group, .sudoku-row, .box-col rules are removed as the elements no longer exist */
 
 .sudoku-cell {
     width: 40px; /* Fixed width */
@@ -118,9 +115,9 @@
         height: 38px;
         font-size: 16px !important;
     }
-    /* Adjust thick border widths if needed */
-    .sudoku-cell:nth-child(4n),
-    .sudoku-cell:nth-child(n+49):nth-child(-n+64),
+    /* Adjust thick border widths */
+    .sudoku-cell:nth-child(4n), /* Right border of 4th, 8th, 12th cell in a row */
+    .sudoku-cell:nth-child(n+49):nth-child(-n+64), /* Row 4 */
     .sudoku-cell:nth-child(n+113):nth-child(-n+128),
     .sudoku-cell:nth-child(n+177):nth-child(-n+192),
     .sudoku-cell:nth-child(-n+16),
@@ -152,11 +149,11 @@
         margin: 1px !important;
     }
      /* Adjust thick border widths */
-    .sudoku-cell:nth-child(4n),
-    .sudoku-cell:nth-child(n+49):nth-child(-n+64),
-    .sudoku-cell:nth-child(n+113):nth-child(-n+128),
-    .sudoku-cell:nth-child(n+177):nth-child(-n+192),
-    .sudoku-cell:nth-child(-n+16),
+    .sudoku-cell:nth-child(4n), /* Right border of 4th, 8th, 12th cell in a row */
+    .sudoku-cell:nth-child(n+49):nth-child(-n+64), /* Row 4 */
+    .sudoku-cell:nth-child(n+113):nth-child(-n+128), /* Row 8 */
+    .sudoku-cell:nth-child(n+177):nth-child(-n+192), /* Row 12 */
+    .sudoku-cell:nth-child(-n+16), /* Top border of first row */
     .sudoku-cell:nth-child(n+241),
     .sudoku-cell:nth-child(16n+1),
     .sudoku-cell:nth-child(16n) {
