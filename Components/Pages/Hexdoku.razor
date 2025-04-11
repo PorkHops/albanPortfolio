@@ -63,11 +63,11 @@
 </MudContainer>
 
 @code {
+    private HexdokuPuzzles? AllPuzzles { get; set; }
+    private HexdokuPuzzle? CurrentPuzzle { get; set; }
+    private int CurrentPuzzleIndex { get; set; } = -1;
     bool _expanded = false;
 
-    private void OnExpandCollapseClick() {
-        _expanded = !_expanded;
-    }
     private string _selectedDifficulty = "easy";
     private string SelectedDifficulty
     {
@@ -90,14 +90,10 @@
             if (_highlightErrors != value)
             {
                 _highlightErrors = value;
-                // Use InvokeVoidAsync and don't wait for it
                 _ = JSRuntime.InvokeVoidAsync("Hexdoku.setHighlightErrors", _highlightErrors);
             }
         }
     }
-    private HexdokuPuzzles? AllPuzzles { get; set; }
-    private HexdokuPuzzle? CurrentPuzzle { get; set; }
-    private int CurrentPuzzleIndex { get; set; } = -1;
 
     protected override async Task OnInitializedAsync()
     {
@@ -105,14 +101,12 @@
         {
             string jsonPath = Path.Combine(Environment.ContentRootPath, "Components", "Utils", "hexdoku.json");
             var jsonString = await File.ReadAllTextAsync(jsonPath);
-            // Case-insensitive property name matching
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             AllPuzzles = JsonSerializer.Deserialize<HexdokuPuzzles>(jsonString, options);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error loading hexdoku puzzles: {ex.Message}");
-            // Handle error appropriately, maybe show a message to the user
         }
     }
 
@@ -121,9 +115,13 @@
         if (firstRender)
         {
             await JSRuntime.InvokeVoidAsync("Hexdoku.init", DotNetObjectReference.Create(this));
-            await JSRuntime.InvokeVoidAsync("Hexdoku.setHighlightErrors", HighlightErrors); // Set initial state in JS
-            await LoadPuzzle(); // Load an initial puzzle
+            await JSRuntime.InvokeVoidAsync("Hexdoku.setHighlightErrors", HighlightErrors);
+            await LoadPuzzle();
         }
+    }
+
+    private void OnExpandCollapseClick() {
+        _expanded = !_expanded;
     }
 
      private async Task LoadPuzzle()
@@ -140,7 +138,7 @@
 
         if (puzzles.Any())
         {
-            // Simple logic to load a random puzzle from the selected difficulty
+            // Load a random puzzle from the selected difficulty
             var rand = new Random();
             CurrentPuzzleIndex = rand.Next(puzzles.Count);
             CurrentPuzzle = puzzles[CurrentPuzzleIndex];
@@ -148,8 +146,8 @@
         }
         else
         {
-            // Handle case where no puzzles exist for the difficulty
-            await JSRuntime.InvokeVoidAsync("Hexdoku.clearGrid"); // Clear if no puzzle loaded
+            // In case where no puzzles exist for the difficulty
+            await JSRuntime.InvokeVoidAsync("Hexdoku.clearGrid");
             Console.WriteLine($"No puzzles found for difficulty: {SelectedDifficulty}");
         }
     }
@@ -163,7 +161,6 @@
     private async Task ClearGrid()
     {
          if (CurrentPuzzle?.Puzzle == null) return;
-        // Reload the original puzzle state to clear user inputs
         await JSRuntime.InvokeVoidAsync("Hexdoku.createGrid", CurrentPuzzle.Puzzle);
     }
 
@@ -174,7 +171,7 @@
         return CurrentPuzzle?.Solution;
     }
 
-    // C# Models to represent the JSON structure
+    // Models
     public class HexdokuPuzzles
     {
         public List<HexdokuPuzzle> Easy { get; set; } = new();
