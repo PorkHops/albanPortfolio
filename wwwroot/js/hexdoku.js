@@ -67,8 +67,9 @@ window.Hexdoku = {
                     cell.value = '';
                     cell.readOnly = false;
                     cell.addEventListener('keydown', this.handleKeyDown.bind(this));
-                    cell.addEventListener('click', this.handleCellClick.bind(this));
                 }
+                // Add click event listener to all cells
+                cell.addEventListener('click', this.handleCellClick.bind(this));
 
                 this.gridElement.appendChild(cell);
             }
