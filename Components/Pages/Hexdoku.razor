@@ -1,0 +1,147 @@
+@page "/hexdoku"
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject IWebHostEnvironment Environment
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+
+<PageTitle>Hexdoku</PageTitle>
+
+<HeadContent>
+    <script src="js/hexdoku.js"></script>
+</HeadContent>
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudText Typo="Typo.h3" GutterBottom="true">Hexdoku</MudText>
+
+    <MudGrid Spacing="2" Justify="Justify.FlexStart" Class="mb-4">
+        <MudItem xs="12" sm="4">
+            <MudSelect @bind-Value="SelectedDifficulty" Label="Difficulty" Variant="Variant.Outlined">
+                <MudSelectItem Value="@("easy")">Easy</MudSelectItem>
+                <MudSelectItem Value="@("medium")">Medium</MudSelectItem>
+                <MudSelectItem Value="@("hard")">Hard</MudSelectItem>
+            </MudSelect>
+        </MudItem>
+        <MudItem xs="12" sm="8" Class="d-flex align-center flex-wrap">
+             <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="LoadPuzzle" Class="mr-2 mb-2">Load Puzzle</MudButton>
+             <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="SolvePuzzle" Class="mr-2 mb-2">Solve</MudButton>
+             <MudButton Variant="Variant.Filled" Color="Color.Warning" OnClick="ClearGrid" Class="mr-2 mb-2">Clear</MudButton>
+             <MudCheckBox T="bool" @bind-Checked="HighlightErrors" Label="Highlight Errors" Color="Color.Error" Class="mb-2"></MudCheckBox>
+        </MudItem>
+    </MudGrid>
+
+    <div id="hexdoku-grid">
+        @* JavaScript will populate this grid *@
+    </div>
+
+</MudContainer>
+
+@code {
+    private string SelectedDifficulty { get; set; } = "easy";
+    private bool _highlightErrors = false;
+    private bool HighlightErrors
+    {
+        get => _highlightErrors;
+        set
+        {
+            if (_highlightErrors != value)
+            {
+                _highlightErrors = value;
+                // Use InvokeVoidAsync and don't wait for it
+                _ = JSRuntime.InvokeVoidAsync("Hexdoku.setHighlightErrors", _highlightErrors);
+            }
+        }
+    }
+    private HexdokuPuzzles? AllPuzzles { get; set; }
+    private HexdokuPuzzle? CurrentPuzzle { get; set; }
+    private int CurrentPuzzleIndex { get; set; } = -1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            string jsonPath = Path.Combine(Environment.ContentRootPath, "Components", "Utils", "hexdoku.json");
+            var jsonString = await File.ReadAllTextAsync(jsonPath);
+            // Case-insensitive property name matching
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            AllPuzzles = JsonSerializer.Deserialize<HexdokuPuzzles>(jsonString, options);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading hexdoku puzzles: {ex.Message}");
+            // Handle error appropriately, maybe show a message to the user
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("Hexdoku.init", DotNetObjectReference.Create(this));
+            await JSRuntime.InvokeVoidAsync("Hexdoku.setHighlightErrors", HighlightErrors); // Set initial state in JS
+            await LoadPuzzle(); // Load an initial puzzle
+        }
+    }
+
+     private async Task LoadPuzzle()
+    {
+        if (AllPuzzles == null) return;
+
+        var puzzles = SelectedDifficulty switch
+        {
+            "easy" => AllPuzzles.Easy,
+            "medium" => AllPuzzles.Medium,
+            "hard" => AllPuzzles.Hard,
+            _ => new List<HexdokuPuzzle>()
+        };
+
+        if (puzzles.Any())
+        {
+            // Simple logic to load a random puzzle from the selected difficulty
+            var rand = new Random();
+            CurrentPuzzleIndex = rand.Next(puzzles.Count);
+            CurrentPuzzle = puzzles[CurrentPuzzleIndex];
+            await JSRuntime.InvokeVoidAsync("Hexdoku.createGrid", CurrentPuzzle?.Puzzle);
+        }
+        else
+        {
+            // Handle case where no puzzles exist for the difficulty
+            await JSRuntime.InvokeVoidAsync("Hexdoku.clearGrid"); // Clear if no puzzle loaded
+            Console.WriteLine($"No puzzles found for difficulty: {SelectedDifficulty}");
+        }
+    }
+
+    private async Task SolvePuzzle()
+    {
+        if (CurrentPuzzle?.Solution == null) return;
+        await JSRuntime.InvokeVoidAsync("Hexdoku.solveGrid", CurrentPuzzle.Solution);
+    }
+
+    private async Task ClearGrid()
+    {
+         if (CurrentPuzzle?.Puzzle == null) return;
+        // Reload the original puzzle state to clear user inputs
+        await JSRuntime.InvokeVoidAsync("Hexdoku.createGrid", CurrentPuzzle.Puzzle);
+    }
+
+    // Method to be called from JavaScript if needed (e.g., for error checking)
+    [JSInvokable]
+    public List<List<string>>? GetSolution()
+    {
+        return CurrentPuzzle?.Solution;
+    }
+
+    // C# Models to represent the JSON structure
+    public class HexdokuPuzzles
+    {
+        public List<HexdokuPuzzle> Easy { get; set; } = new();
+        public List<HexdokuPuzzle> Medium { get; set; } = new();
+        public List<HexdokuPuzzle> Hard { get; set; } = new();
+    }
+
+    public class HexdokuPuzzle
+    {
+        public List<List<string>> Puzzle { get; set; } = new();
+        public List<List<string>> Solution { get; set; } = new();
+    }
+}
