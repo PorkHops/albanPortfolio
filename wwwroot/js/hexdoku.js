@@ -51,11 +51,11 @@ window.Hexdoku = {
                 cell.style.outline = 'none';
                 cell.style.backgroundColor = 'white'; // Default background
 
-                // Add thicker borders for 4x4 subgrids
+                // Add thicker borders for 4x4 sub-grids
                 if (r % 4 === 0 && r !== 0) cell.style.borderTop = '2px solid black';
                 if (c % 4 === 0 && c !== 0) cell.style.borderLeft = '2px solid black';
-                if (r === 15) cell.style.borderBottom = '1px solid #ccc'; // Ensure bottom border isn't thick unless needed
-                if (c === 15) cell.style.borderRight = '1px solid #ccc'; // Ensure right border isn't thick unless needed
+                if (r === 15) cell.style.borderBottom = '1px solid #ccc';
+                if (c === 15) cell.style.borderRight = '1px solid #ccc';
 
 
                 const initialValue = puzzleData[r][c];
