@@ -50,34 +50,42 @@
     <MudPaper Elevation="3" Class="pa-4 mb-4">
         <div class="d-flex justify-center">
             <div class="sudoku-grid">
-                @for (int row = 0; row < 16; row++)
+                @for (int boxRow = 0; boxRow < 4; boxRow++)
                 {
-                    <div class="sudoku-row">
-                        @for (int col = 0; col < 16; col++)
+                    <div class="box-group">
+                        @for (int innerRow = 0; innerRow < 4; innerRow++)
                         {
-                            int currentRow = row;
-                            int currentCol = col;
-                            bool isFixed = FixedCells[row, col];
-                            bool isInvalid = !IsValid(row, col, Grid[row, col]);
-                            bool isHighlighted = HighlightedRow == row || HighlightedCol == col || 
-                                             (row/4 == HighlightedBox/4 && col/4 == HighlightedBox%4);
-                            bool isSelected = SelectedCell.HasValue && 
-                                           SelectedCell.Value.row == row && 
-                                           SelectedCell.Value.col == col;
-                            
-                            <div class="@GetCellClass(isFixed, isInvalid, isHighlighted, isSelected)"
-                                 @onclick="() => CellClicked(currentRow, currentCol)">
-                                @if (Grid[row, col] != '.')
+                            int row = boxRow * 4 + innerRow;
+                            <div class="sudoku-row">
+                                @for (int boxCol = 0; boxCol < 4; boxCol++)
                                 {
-                                    <span>@Grid[row, col]</span>
+                                    <div class="box-col">
+                                        @for (int innerCol = 0; innerCol < 4; innerCol++)
+                                        {
+                                            int col = boxCol * 4 + innerCol;
+                                            int currentRow = row;
+                                            int currentCol = col;
+                                            bool isFixed = FixedCells[row, col];
+                                            bool isInvalid = !IsValid(row, col, Grid[row, col]);
+                                            bool isHighlighted = HighlightedRow == row || HighlightedCol == col ||
+                                                             (row/4 == HighlightedBox/4 && col/4 == HighlightedBox%4);
+                                            bool isSelected = SelectedCell.HasValue &&
+                                                           SelectedCell.Value.row == row &&
+                                                           SelectedCell.Value.col == col;
+                                            
+                                            <div class="@GetCellClass(isFixed, isInvalid, isHighlighted, isSelected)"
+                                                 @onclick="() => CellClicked(currentRow, currentCol)">
+                                                @if (Grid[row, col] != '.')
+                                                {
+                                                    <span>@Grid[row, col]</span>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
                                 }
                             </div>
                         }
                     </div>
-                    @if ((row + 1) % 4 == 0 && row < 15)
-                    {
-                        <div class="box-divider"></div>
-                    }
                 }
             </div>
         </div>

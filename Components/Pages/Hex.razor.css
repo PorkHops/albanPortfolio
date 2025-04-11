@@ -1,48 +1,71 @@
 ﻿.sudoku-grid {
-    display: flex;
-    flex-direction: column;
-    border: 3px solid var(--mud-palette-primary);
+    display: grid; /* Switch to CSS Grid */
+    grid-template-columns: repeat(16, 40px);
+    grid-template-rows: repeat(16, 40px);
+    border: 2px solid var(--mud-palette-primary); /* Outer border */
     background-color: var(--mud-palette-surface);
     margin: 0 auto;
-    padding: 3px;
+    padding: 0; /* Remove padding */
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: fit-content; /* Let grid calculate width */
+    gap: 0; /* No gap between cells */
 }
 
-.sudoku-row {
-    display: flex;
-}
-
-.box-divider {
-    height: 3px;
-    background-color: var(--mud-palette-primary);
-    width: 100%;
-    margin: 3px 0;
+/* Remove obsolete flexbox containers */
+.box-group, .sudoku-row, .box-col {
+    display: contents; /* Make these containers pass their children directly to the grid */
 }
 
 .sudoku-cell {
-    width: 40px;
-    height: 40px;
+    width: 40px; /* Fixed width */
+    height: 40px; /* Fixed height */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
     font-weight: bold;
-    border: 1px solid var(--mud-palette-lines-default);
+    border: 0.5px solid var(--mud-palette-lines-default); /* Default thin border */
     cursor: pointer;
-    transition: all 0.2s ease;
-    margin: 1px;
-    border-radius: 2px;
+    transition: background-color 0.2s ease; /* Smoother transition */
+    position: relative;
+    margin: 0;
+    box-sizing: border-box; /* Include border in size */
 }
-
+/* Thicker Box Borders using nth-child on grid cells */
 .sudoku-cell:nth-child(4n) {
-    border-right: 3px solid var(--mud-palette-primary);
-    margin-right: 3px;
+    border-right: 2px solid var(--mud-palette-primary);
+}
+.sudoku-cell:nth-child(16n - 16 + 1), /* First cell in each row */
+.sudoku-cell:nth-child(16n - 16 + 2),
+.sudoku-cell:nth-child(16n - 16 + 3),
+.sudoku-cell:nth-child(16n - 16 + 4),
+.sudoku-cell:nth-child(16n - 16 + 5),
+.sudoku-cell:nth-child(16n - 16 + 6),
+.sudoku-cell:nth-child(16n - 16 + 7),
+.sudoku-cell:nth-child(16n - 16 + 8),
+.sudoku-cell:nth-child(16n - 16 + 9),
+.sudoku-cell:nth-child(16n - 16 + 10),
+.sudoku-cell:nth-child(16n - 16 + 11),
+.sudoku-cell:nth-child(16n - 16 + 12),
+.sudoku-cell:nth-child(16n - 16 + 13),
+.sudoku-cell:nth-child(16n - 16 + 14),
+.sudoku-cell:nth-child(16n - 16 + 15),
+.sudoku-cell:nth-child(16n) { /* Cells in rows 4, 8, 12 */
+    border-bottom: 0.5px solid var(--mud-palette-lines-default); /* Ensure default border first */
 }
 
-.sudoku-row:nth-child(4n) .sudoku-cell {
-    border-bottom: 3px solid var(--mud-palette-primary);
-    margin-bottom: 3px;
+/* Apply thicker bottom border to cells in rows 4, 8, 12 */
+.sudoku-cell:nth-child(n+49):nth-child(-n+64), /* Row 4 (cells 49-64) */
+.sudoku-cell:nth-child(n+113):nth-child(-n+128), /* Row 8 (cells 113-128) */
+.sudoku-cell:nth-child(n+177):nth-child(-n+192) { /* Row 12 (cells 177-192) */
+    border-bottom: 2px solid var(--mud-palette-primary);
 }
+
+/* Ensure outer borders are thick */
+.sudoku-cell:nth-child(-n+16) { border-top: 2px solid var(--mud-palette-primary); } /* First row */
+.sudoku-cell:nth-child(n+241) { border-bottom: 2px solid var(--mud-palette-primary); } /* Last row */
+.sudoku-cell:nth-child(16n+1) { border-left: 2px solid var(--mud-palette-primary); } /* First column */
+.sudoku-cell:nth-child(16n) { border-right: 2px solid var(--mud-palette-primary); } /* Last column */
 
 .sudoku-cell.fixed {
     background-color: var(--mud-palette-action-default);
@@ -79,36 +102,67 @@
     75% { transform: translateX(2px); }
 }
 
-@media (max-width: 768px) {
+/* Responsive adjustments using CSS Grid */
+@media (max-width: 700px) {
+    .sudoku-grid {
+        grid-template-columns: repeat(16, 35px);
+        grid-template-rows: repeat(16, 35px);
+    }
     .sudoku-cell {
         width: 35px;
         height: 35px;
         font-size: 16px;
     }
-    
     .digit-button {
         min-width: 38px !important;
         height: 38px;
         font-size: 16px !important;
     }
+    /* Adjust thick border widths if needed */
+    .sudoku-cell:nth-child(4n),
+    .sudoku-cell:nth-child(n+49):nth-child(-n+64),
+    .sudoku-cell:nth-child(n+113):nth-child(-n+128),
+    .sudoku-cell:nth-child(n+177):nth-child(-n+192),
+    .sudoku-cell:nth-child(-n+16),
+    .sudoku-cell:nth-child(n+241),
+    .sudoku-cell:nth-child(16n+1),
+    .sudoku-cell:nth-child(16n) {
+        border-width: 1.5px; /* Slightly thinner thick borders */
+    }
+     .sudoku-grid {
+        border-width: 1.5px;
+    }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 420px) {
+     .sudoku-grid {
+        grid-template-columns: repeat(16, 22px);
+        grid-template-rows: repeat(16, 22px);
+    }
     .sudoku-cell {
-        width: 28px;
-        height: 28px;
-        font-size: 14px;
-        margin: 0.5px;
+        width: 22px;
+        height: 22px;
+        font-size: 12px;
+        border-width: 0.5px; /* Keep thin borders */
     }
-    
     .digit-button {
-        min-width: 32px !important;
-        height: 32px;
-        font-size: 14px !important;
-        margin: 2px !important;
+        min-width: 30px !important;
+        height: 30px;
+        font-size: 12px !important;
+        margin: 1px !important;
     }
-
-    .box-divider {
-        margin: 2px 0;
+     /* Adjust thick border widths */
+    .sudoku-cell:nth-child(4n),
+    .sudoku-cell:nth-child(n+49):nth-child(-n+64),
+    .sudoku-cell:nth-child(n+113):nth-child(-n+128),
+    .sudoku-cell:nth-child(n+177):nth-child(-n+192),
+    .sudoku-cell:nth-child(-n+16),
+    .sudoku-cell:nth-child(n+241),
+    .sudoku-cell:nth-child(16n+1),
+    .sudoku-cell:nth-child(16n) {
+        border-width: 1px; /* Even thinner thick borders */
+    }
+     .sudoku-grid {
+        border-width: 1px;
     }
 }
