@@ -7,7 +7,7 @@ window.Hexdoku = {
     init: function (dotNetHelper) {
         console.log("Hexdoku JS Initializing...");
         this.gridElement = document.getElementById('hexdoku-grid');
-        this.dotNetHelper = dotNetHelper; // Store the reference
+        this.dotNetHelper = dotNetHelper;
         if (!this.gridElement) {
             console.error("Hexdoku grid element not found!");
             return;
@@ -66,7 +66,7 @@ window.Hexdoku = {
                 } else {
                     cell.value = '';
                     cell.readOnly = false;
-                    cell.addEventListener('input', this.handleInput.bind(this));
+                    cell.addEventListener('keydown', this.handleKeyDown.bind(this));
                 }
 
                 this.gridElement.appendChild(cell);
@@ -76,17 +76,24 @@ window.Hexdoku = {
         console.log("Grid created.");
     },
 
-    handleInput: function (event) {
+    handleKeyDown: function (event) {
         const input = event.target;
-        const value = input.value.toUpperCase();
 
-        // Allow only valid hex characters (0-9, A-F) or empty string
-        if (!/^[0-9A-F]?$/.test(value)) {
+        if (event.key === 'Backspace' || event.key === 'Delete') {
             input.value = '';
-        } else {
-            input.value = value; // Ensure uppercase
+            this.checkAllErrors();
+            return;
         }
-        this.checkAllErrors();
+
+        // Get the pressed key and convert to uppercase
+        let value = event.key.toUpperCase();
+
+        // Allow only valid hex characters (0-9, A-F)
+        if (/^[0-9A-F]$/.test(value)) {
+            event.preventDefault(); // Prevent default to handle the input ourselves
+            input.value = value;
+            this.checkAllErrors();
+        }
     },
 
     solveGrid: function (solutionData) {
@@ -129,7 +136,7 @@ window.Hexdoku = {
 
     checkAllErrors: function() {
         if (!this.dotNetHelper) return;
-        
+
         if (!this.highlightErrorsEnabled) {
             const cells = this.gridElement.querySelectorAll('input');
             cells.forEach(cell => {
