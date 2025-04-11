@@ -67,6 +67,7 @@ window.Hexdoku = {
                     cell.value = '';
                     cell.readOnly = false;
                     cell.addEventListener('keydown', this.handleKeyDown.bind(this));
+                    cell.addEventListener('click', this.handleCellClick.bind(this));
                 }
 
                 this.gridElement.appendChild(cell);
@@ -82,6 +83,15 @@ window.Hexdoku = {
         if (event.key === 'Backspace' || event.key === 'Delete') {
             input.value = '';
             this.checkAllErrors();
+            // Clear highlights when cell is emptied
+            const cells = this.gridElement.querySelectorAll('input');
+            cells.forEach(cell => {
+                if (!cell.readOnly) {
+                    cell.style.backgroundColor = 'white';
+                } else {
+                    cell.style.backgroundColor = '#eee';
+                }
+            });
             return;
         }
 
@@ -93,6 +103,7 @@ window.Hexdoku = {
             event.preventDefault(); // Prevent default to handle the input ourselves
             input.value = value;
             this.checkAllErrors();
+            this.highlightMatchingCells(input);
         }
     },
 
@@ -107,6 +118,8 @@ window.Hexdoku = {
             cell.value = solutionData[r][c].toUpperCase();
             cell.style.backgroundColor = cell.readOnly ? '#eee' : 'white';
             cell.style.color = 'black';
+            // Clear any existing highlights
+            this.clearHighlights();
         });
         console.log("Grid solved.");
     },
@@ -122,6 +135,8 @@ window.Hexdoku = {
                      cell.value = '';
                      cell.style.backgroundColor = 'white';
                      cell.style.color = 'black';
+                     // Clear any existing highlights
+                     this.clearHighlights();
                  }
              });
         }
@@ -183,5 +198,46 @@ window.Hexdoku = {
                 });
             })
             .catch(error => console.error("Error getting solution for validation:", error));
+    },
+
+    clearHighlights: function() {
+        const cells = this.gridElement.querySelectorAll('input');
+        cells.forEach(cell => {
+            if (!cell.readOnly) {
+                cell.style.backgroundColor = 'white';
+            } else {
+                cell.style.backgroundColor = '#eee';
+            }
+        });
+    },
+
+    handleCellClick: function(event) {
+        const cell = event.target;
+        if (cell.value) {
+            this.highlightMatchingCells(cell);
+        }
+    },
+
+    highlightMatchingCells: function(activeCell) {
+        const value = activeCell.value.toUpperCase();
+        if (!value) return;
+
+        const cells = this.gridElement.querySelectorAll('input');
+        cells.forEach(cell => {
+            // Reset background for non-readonly cells first
+            if (!cell.readOnly) {
+                cell.style.backgroundColor = 'white';
+            } else {
+                cell.style.backgroundColor = '#eee';
+            }
+
+            // Then highlight matching cells
+            if (cell.value.toUpperCase() === value) {
+                cell.style.backgroundColor = '#ffeb3b'; // Light yellow highlight
+            }
+        });
+
+        // Ensure active cell is more prominently highlighted
+        activeCell.style.backgroundColor = '#ffd700'; // Darker yellow for active cell
     }
 };
