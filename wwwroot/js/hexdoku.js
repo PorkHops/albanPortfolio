@@ -217,31 +217,61 @@ window.Hexdoku = {
 
     handleCellClick: function(event) {
         const cell = event.target;
-        if (cell.value) {
-            this.highlightMatchingCells(cell);
-        }
+        this.highlightMatchingCells(cell);
     },
 
     highlightMatchingCells: function(activeCell) {
         const value = activeCell.value.toUpperCase();
-        if (!value) return;
+        const activeRow = parseInt(activeCell.dataset.row);
+        const activeCol = parseInt(activeCell.dataset.col);
+        const activeSubGridRow = Math.floor(activeRow / 4);
+        const activeSubGridCol = Math.floor(activeCol / 4);
 
         const cells = this.gridElement.querySelectorAll('input');
+        
+        // Count occurrences of each value in the grid
+        const valueCounts = new Map();
         cells.forEach(cell => {
-            // Reset background for non-readonly cells first
+            const cellValue = cell.value.toUpperCase();
+            if (cellValue) {
+                valueCounts.set(cellValue, (valueCounts.get(cellValue) || 0) + 1);
+            }
+        });
+
+        cells.forEach(cell => {
+            const cellValue = cell.value.toUpperCase();
+            const cellRow = parseInt(cell.dataset.row);
+            const cellCol = parseInt(cell.dataset.col);
+            const cellSubGridRow = Math.floor(cellRow / 4);
+            const cellSubGridCol = Math.floor(cellCol / 4);
+
+            // Reset styling for non-readonly cells first
             if (!cell.readOnly) {
                 cell.style.backgroundColor = 'white';
+                cell.style.color = 'black';
             } else {
                 cell.style.backgroundColor = '#eee';
+                cell.style.color = 'black';
             }
 
-            // Then highlight matching cells
-            if (cell.value.toUpperCase() === value) {
+            // Add light blue highlight for same row, column, or sub-grid
+            if (cellRow === activeRow || cellCol === activeCol ||
+                (cellSubGridRow === activeSubGridRow && cellSubGridCol === activeSubGridCol)) {
+                cell.style.backgroundColor = '#e3f2fd';
+            }
+
+            // Check if any values are fully placed (appear 16 times)
+            if (cellValue && valueCounts.get(cellValue) === 16) {
+                cell.style.backgroundColor = '#D2FAD2'; // Light green
+                cell.style.color = '#888888'; // Light grey text
+            }
+            // Then highlight matching value cells (higher priority than row/column highlight)
+            else if (cellValue === value && value !== '') {
                 cell.style.backgroundColor = '#ffeb3b'; // Light yellow highlight
             }
         });
 
-        // Ensure active cell is more prominently highlighted
-        activeCell.style.backgroundColor = '#ffd700'; // Darker yellow for active cell
+        // Darker yellow for active cell
+        activeCell.style.backgroundColor = '#ffd700';
     }
 };
