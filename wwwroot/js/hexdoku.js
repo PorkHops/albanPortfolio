@@ -96,15 +96,18 @@ window.Hexdoku = {
             return;
         }
 
-        // Get the pressed key and convert to uppercase
-        let value = event.key.toUpperCase();
+        // Prevent default for any single character key
+        if (event.key.length === 1) {
+            event.preventDefault();
+            
+            let value = event.key.toUpperCase();
 
-        // Allow only valid hex characters (0-9, A-F)
-        if (/^[0-9A-F]$/.test(value)) {
-            event.preventDefault(); // Prevent default to handle the input ourselves
-            input.value = value;
-            this.checkAllErrors();
-            this.highlightMatchingCells(input);
+            // Allow only valid hex characters (0-9, A-F)
+            if (/^[0-9A-F]$/.test(value)) {
+                input.value = value;
+                this.checkAllErrors();
+                this.highlightMatchingCells(input);
+            }
         }
     },
 
