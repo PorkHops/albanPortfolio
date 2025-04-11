@@ -1,0 +1,368 @@
+﻿@page "/hexsudoku"
+@using MudBlazor
+@using albanPortfolio.Components.Utils
+@inject IWebHostEnvironment Environment
+@inject ILogger<Hex> Logger
+
+@rendermode InteractiveServer
+
+<PageTitle>Hexadecimal Sudoku</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudText Typo="Typo.h3" Align="Align.Center" Class="mb-4">Hexadecimal Sudoku</MudText>
+
+    <MudPaper Elevation="3" Class="pa-4 mb-4">
+        <MudGrid>
+            <MudItem xs="12" sm="4" md="3">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" 
+                          OnClick="LoadNewPuzzle" Disabled="@IsSolving" Class="mb-2">
+                    New Puzzle
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12" sm="4" md="3">
+                <MudButton Variant="Variant.Filled" Color="Color.Success" FullWidth="true" 
+                          OnClick="SolvePuzzle" Disabled="@IsSolving" Class="mb-2">
+                    Solve
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12" sm="4" md="3">
+                <MudButton Variant="Variant.Filled" Color="Color.Error" FullWidth="true" 
+                          OnClick="ClearGrid" Disabled="@IsSolving" Class="mb-2">
+                    Clear
+                </MudButton>
+            </MudItem>
+            <MudItem xs="12" sm="12" md="3">
+                <MudSelect T="string" Label="Difficulty" @bind-Value="Difficulty" Variant="Variant.Outlined" 
+                          Disabled="@IsSolving">
+                    <MudSelectItem Value="@("easy")">Easy</MudSelectItem>
+                    <MudSelectItem Value="@("medium")">Medium</MudSelectItem>
+                    <MudSelectItem Value="@("hard")">Hard</MudSelectItem>
+                </MudSelect>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    @if (!string.IsNullOrEmpty(Status))
+    {
+        <MudAlert Severity="Severity.Info" Class="my-2">@Status</MudAlert>
+    }
+
+    <MudPaper Elevation="3" Class="pa-4 mb-4">
+        <div class="d-flex justify-center">
+            <div class="sudoku-grid">
+                @for (int row = 0; row < 16; row++)
+                {
+                    <div class="sudoku-row">
+                        @for (int col = 0; col < 16; col++)
+                        {
+                            int currentRow = row;
+                            int currentCol = col;
+                            bool isFixed = FixedCells[row, col];
+                            bool isInvalid = !IsValid(row, col, Grid[row, col]);
+                            bool isHighlighted = HighlightedRow == row || HighlightedCol == col || 
+                                             (row/4 == HighlightedBox/4 && col/4 == HighlightedBox%4);
+                            bool isSelected = SelectedCell.HasValue && 
+                                           SelectedCell.Value.row == row && 
+                                           SelectedCell.Value.col == col;
+                            
+                            <div class="@GetCellClass(isFixed, isInvalid, isHighlighted, isSelected)"
+                                 @onclick="() => CellClicked(currentRow, currentCol)">
+                                @if (Grid[row, col] != '.')
+                                {
+                                    <span>@Grid[row, col]</span>
+                                }
+                            </div>
+                        }
+                    </div>
+                    @if ((row + 1) % 4 == 0 && row < 15)
+                    {
+                        <div class="box-divider"></div>
+                    }
+                }
+            </div>
+        </div>
+
+        @if (SelectedCell != null)
+        {
+            <MudPaper Elevation="2" Class="mt-4 pa-2">
+                <MudText Align="Align.Center" Class="mb-2">Select a digit:</MudText>
+                <div class="d-flex flex-wrap justify-center">
+                    @foreach (var digit in ValidValues)
+                    {
+                        char currentDigit = digit;
+                        bool isSelected = SelectedCell.HasValue && 
+                                       Grid[SelectedCell.Value.row, SelectedCell.Value.col] == currentDigit;
+                        <MudButton Variant="@(isSelected ? Variant.Filled : Variant.Outlined)" 
+                                 Color="@(isSelected ? Color.Primary : Color.Default)"
+                                 Class="ma-1 digit-button" OnClick="() => DigitSelected(currentDigit)">
+                            @digit
+                        </MudButton>
+                    }
+                    <MudButton Variant="Variant.Filled" Color="Color.Error" 
+                              Class="ma-1 digit-button" OnClick="() => DigitSelected('.')">
+                        <MudIcon Icon="@Icons.Material.Filled.Clear" Size="Size.Small" />
+                    </MudButton>
+                </div>
+            </MudPaper>
+        }
+    </MudPaper>
+</MudContainer>
+
+@if (IsSolving)
+{
+    <MudOverlay Visible="true" DarkBackground="true" Absolute="false">
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+        <MudText Typo="Typo.h6" Color="Color.Surface" Class="mt-4">@Status</MudText>
+    </MudOverlay>
+}
+
+@code {
+    private char[,] Grid = new char[16, 16];
+    private bool[,] FixedCells = new bool[16, 16];
+    private char[] ValidValues = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+    private Random random = new Random();
+    private (int row, int col)? SelectedCell = null;
+    private string Difficulty = "easy";
+    private bool IsSolving = false;
+    private int HighlightedRow = -1;
+    private int HighlightedCol = -1;
+    private int HighlightedBox = -1;
+    private string Status = "";
+    private HexdokuData? PuzzleData;
+    private char[,]? CurrentSolution;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await LoadPuzzleData();
+            if (PuzzleData != null)
+            {
+                await LoadNewPuzzle();
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error during initialization");
+            Status = "Error initializing the game";
+        }
+    }
+
+    private async Task LoadPuzzleData()
+    {
+        try
+        {
+            string jsonPath = Path.Combine(Environment.ContentRootPath, "Components", "Utils", "hexdoku.json");
+            Logger.LogInformation($"Loading puzzle data from: {jsonPath}");
+            
+            PuzzleData = await HexdokuData.LoadFromFile(jsonPath);
+            
+            if (PuzzleData == null)
+            {
+                throw new Exception("Failed to load puzzle data");
+            }
+
+            Logger.LogInformation($"Loaded puzzles - Easy: {PuzzleData.Easy.Count}, Medium: {PuzzleData.Medium.Count}, Hard: {PuzzleData.Hard.Count}");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading puzzle data");
+            Status = $"Error loading puzzles: {ex.Message}";
+            throw;
+        }
+    }
+
+    private string GetCellClass(bool isFixed, bool isInvalid, bool isHighlighted, bool isSelected)
+    {
+        string baseClass = "sudoku-cell";
+        
+        if (isFixed)
+            baseClass += " fixed";
+        if (isInvalid)
+            baseClass += " invalid";
+        if (isHighlighted)
+            baseClass += " highlighted";
+        if (isSelected)
+            baseClass += " selected";
+            
+        return baseClass;
+    }
+
+    private void ClearGrid()
+    {
+        for (int row = 0; row < 16; row++)
+        {
+            for (int col = 0; col < 16; col++)
+            {
+                Grid[row, col]       = '.';
+                FixedCells[row, col] = false;
+            }
+        }
+        CurrentSolution = null;
+        SelectedCell    = null;
+        Status          = "";
+    }
+
+    private async Task LoadNewPuzzle()
+    {
+        try
+        {
+            if (PuzzleData == null)
+            {
+                await LoadPuzzleData();
+                if (PuzzleData == null)
+                {
+                    Status = "Failed to load puzzle data";
+                    return;
+                }
+            }
+
+            var puzzles = Difficulty switch
+            {
+                "easy"   => PuzzleData.Easy,
+                "medium" => PuzzleData.Medium,
+                "hard"   => PuzzleData.Hard,
+                _        => PuzzleData.Easy
+            };
+
+            if (!puzzles.Any())
+            {
+                Status = $"No {Difficulty} puzzles available";
+                return;
+            }
+
+            var selectedPuzzle = puzzles[random.Next(puzzles.Count)];
+            Logger.LogInformation("Loading new puzzle");
+
+            // Load puzzle
+            for (int row = 0; row < 16; row++)
+            {
+                for (int col = 0; col < 16; col++)
+                {
+                    Grid[row, col] = selectedPuzzle.Puzzle[row][col][0];
+                    FixedCells[row, col] = selectedPuzzle.Puzzle[row][col] != ".";
+                }
+            }
+
+            // Store solution
+            CurrentSolution = new char[16, 16];
+            for (int row = 0; row < 16; row++)
+            {
+                for (int col = 0; col < 16; col++)
+                {
+                    CurrentSolution[row, col] = selectedPuzzle.Solution[row][col][0];
+                }
+            }
+
+            SelectedCell = null;
+            Status = "";
+            StateHasChanged();
+            Logger.LogInformation("New puzzle loaded successfully");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error loading new puzzle");
+            Status = "Error loading puzzle";
+        }
+    }
+
+    private async Task SolvePuzzle()
+    {
+        if (CurrentSolution == null)
+        {
+            Status = "No solution available";
+            return;
+        }
+
+        try
+        {
+            IsSolving = true;
+            Status = "Solving puzzle...";
+            StateHasChanged();
+
+            await Task.Delay(50); // Visual feedback
+
+            // Apply solution
+            for (int row = 0; row < 16; row++)
+            {
+                for (int col = 0; col < 16; col++)
+                {
+                    Grid[row, col] = CurrentSolution[row, col];
+                }
+            }
+
+            Status = "";
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error solving puzzle");
+            Status = "Error solving puzzle";
+        }
+        finally
+        {
+            IsSolving = false;
+            StateHasChanged();
+        }
+    }
+
+    private void CellClicked(int row, int col)
+    {
+        if (!FixedCells[row, col] && !IsSolving)
+        {
+            SelectedCell   = (row, col);
+            HighlightedRow = row;
+            HighlightedCol = col;
+            HighlightedBox = (row / 4) * 4 + (col / 4);
+            StateHasChanged();
+        }
+    }
+
+    private void DigitSelected(char digit)
+    {
+        if (SelectedCell != null && !IsSolving)
+        {
+            var (row, col) = SelectedCell.Value;
+            if (!FixedCells[row, col])
+            {
+                Grid[row, col] = digit;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private bool IsValid(int row, int col, char value)
+    {
+        if (value == '.') return true;
+
+        // Check row
+        for (int c = 0; c < 16; c++)
+        {
+            if (c != col && Grid[row, c] == value)
+                return false;
+        }
+
+        // Check column
+        for (int r = 0; r < 16; r++)
+        {
+            if (r != row && Grid[r, col] == value)
+                return false;
+        }
+
+        // Check box
+        int boxRowStart = (row / 4) * 4;
+        int boxColStart = (col / 4) * 4;
+
+        for (int r = 0; r < 4; r++)
+        {
+            for (int c = 0; c < 4; c++)
+            {
+                int currentRow = boxRowStart + r;
+                int currentCol = boxColStart + c;
+                if ((currentRow != row || currentCol != col) && Grid[currentRow, currentCol] == value)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+}

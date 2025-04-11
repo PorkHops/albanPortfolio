@@ -21,12 +21,12 @@ public static class ProjectsData
         {
             Title       = "Automated API Testing Framework",
             Description = "Our company utilized numerous APIs that required regular stability testing. "
-                + "The existing process involved an engineer manually running tests through Telerik Fiddler hourly - "
-                + "executing each API test individually, waiting for completion, and then analyzing results for errors. "
-                + "I was tasked with developing a more efficient and automated testing solution.<br /><br />"
-                + "I discovered that Fiddler's session files (.saz format) were essentially zip archives containing plain text files of the APIs and their expected outputs. "
-                + "This insight significantly simplified the project approach.<br /><br />"
-                + "I developed a Windows service to run on a company server that performed the following:",
+                          + "The existing process involved an engineer manually running tests through Telerik Fiddler hourly - "
+                          + "executing each API test individually, waiting for completion, and then analyzing results for errors. "
+                          + "I was tasked with developing a more efficient and automated testing solution.<br /><br />"
+                          + "I discovered that Fiddler's session files (.saz format) were essentially zip archives containing plain text files of the APIs and their expected outputs. "
+                          + "This insight significantly simplified the project approach.<br /><br />"
+                          + "I developed a Windows service to run on a company server that performed the following:",
             Sections    =
             [
                 new()
@@ -135,6 +135,41 @@ public static class ProjectsData
                 }
             ]
         },
+
+        new()
+        {
+            Title       = "Geofence Mapping",
+            Description = "*Due to the nature of this project, and the sensitivity of the space, I will not be able to disclose any key details, but I will try "
+                          + "to give a high level overview of the project and my role.*<br /><br />"
+                          + "The goal of this project was to be the beginning steps of the autonomous driving (AD) map system, and ultimately act as a filter for roads "
+                          + "that stakeholders deemed would be unfit or unsafe for autonomous driving. A general idea for this is that, for many liability and safety "
+                          + "reasons, it is unwise for people to rely on AD to navigate a 100° turn at 90mph. We created any rules like this within the tool.<br /><br />"
+                          + " ",
+            Sections    =
+            [
+                new()
+                {
+                    Title   = "Data & Structure",
+                    Bullets =
+                    [
+                        "You know those little cars that have a million cameras and sensors on them? We used the data from those to create a virtual map.",
+                        "Our team was given very large XMLs that were gathered from the field from those vehicles.",
+                        "These XMLs contained every possible detail of a roadway that you could imagine. All the way down to how faded the lines are.",
+                        "We had to parse these XMLs and create a data structure that would allow us to easily access the data.",
+                        "It was also crucial that the data could be used by the rest of the pipeline to later create the actual map the AD computer uses.",
+                        "The "
+                    ]
+                },
+                new()
+                {
+                    Title   = "",
+                    Bullets =
+                    [
+                        ""
+                    ]
+                }
+            ]
+        }
 
         // new()
         // {
