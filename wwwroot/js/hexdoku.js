@@ -7,19 +7,19 @@ window.Hexdoku = {
 
     init: function (dotNetHelper) {
         console.log("Hexdoku JS Initializing...");
-        this.gridElement = document.getElementById('hexdoku-grid');
+        this.gridElement  = document.getElementById('hexdoku-grid');
         this.dotNetHelper = dotNetHelper;
         if (!this.gridElement) {
             console.error("Hexdoku grid element not found!");
             return;
         }
-        this.gridElement.style.display = 'grid';
+        this.gridElement.style.display             = 'grid';
         this.gridElement.style.gridTemplateColumns = 'repeat(16, 1fr)';
-        this.gridElement.style.gridTemplateRows = 'repeat(16, 1fr)';
-        this.gridElement.style.aspectRatio = '1 / 1';
-        this.gridElement.style.width = 'min(80vw, 600px)';
-        this.gridElement.style.margin = 'auto';
-        this.gridElement.style.border = '2px solid black';
+        this.gridElement.style.gridTemplateRows    = 'repeat(16, 1fr)';
+        this.gridElement.style.aspectRatio         = '1 / 1';
+        this.gridElement.style.width               = 'min(80vw, 600px)';
+        this.gridElement.style.margin              = 'auto';
+        this.gridElement.style.border              = '2px solid black';
         console.log("Hexdoku JS Initialized.");
     },
 
@@ -29,42 +29,42 @@ window.Hexdoku = {
             console.error("Cannot create grid. Element or data missing.");
             return;
         }
-        this.currentPuzzleData = puzzleData;
+        this.currentPuzzleData     = puzzleData;
         this.gridElement.innerHTML = '';
 
         for (let r = 0; r < 16; r++) {
             for (let c = 0; c < 16; c++) {
-                const cell = document.createElement('input');
-                cell.type = 'text';
-                cell.maxLength = 1;
-                cell.dataset.row = r;
-                cell.dataset.col = c;
+                const cell             = document.createElement('input');
+                      cell.type        = 'text';
+                      cell.maxLength   = 1;
+                      cell.dataset.row = r;
+                      cell.dataset.col = c;
 
                 // Styling
-                cell.style.width = '100%';
-                cell.style.height = '100%';
-                cell.style.boxSizing = 'border-box';
-                cell.style.textAlign = 'center';
-                cell.style.fontSize = 'clamp(10px, 2vw, 18px)';
-                cell.style.padding = '0';
-                cell.style.border = '1px solid #ccc';
-                cell.style.outline = 'none';
+                cell.style.width           = '100%';
+                cell.style.height          = '100%';
+                cell.style.boxSizing       = 'border-box';
+                cell.style.textAlign       = 'center';
+                cell.style.fontSize        = 'clamp(10px, 2vw, 18px)';
+                cell.style.padding         = '0';
+                cell.style.border          = '1px solid #ccc';
+                cell.style.outline         = 'none';
                 cell.style.backgroundColor = 'white';
 
                 // Add thicker borders for 4x4 sub-grids
-                if (r % 4 === 0 && r !== 0) cell.style.borderTop = '2px solid black';
+                if (r % 4 === 0 && r !== 0) cell.style.borderTop  = '2px solid black';
                 if (c % 4 === 0 && c !== 0) cell.style.borderLeft = '2px solid black';
                 if (r === 15) cell.style.borderBottom = '1px solid #ccc';
-                if (c === 15) cell.style.borderRight = '1px solid #ccc';
+                if (c === 15) cell.style.borderRight  = '1px solid #ccc';
 
                 const initialValue = puzzleData[r][c];
                 if (initialValue && initialValue !== '.') {
-                    cell.value = initialValue.toUpperCase();
-                    cell.readOnly = true;
-                    cell.style.fontWeight = 'bold';
+                    cell.value                 = initialValue.toUpperCase();
+                    cell.readOnly              = true;
+                    cell.style.fontWeight      = 'bold';
                     cell.style.backgroundColor = '#eee';
                 } else {
-                    cell.value = '';
+                    cell.value    = '';
                     cell.readOnly = false;
                     cell.addEventListener('keydown', this.handleKeyDown.bind(this));
                 }
@@ -99,7 +99,7 @@ window.Hexdoku = {
         // Prevent default for any single character key
         if (event.key.length === 1) {
             event.preventDefault();
-            
+
             let value = event.key.toUpperCase();
 
             // Allow only valid hex characters (0-9, A-F)
@@ -124,7 +124,6 @@ window.Hexdoku = {
             cell.value = solutionData[r][c].toUpperCase();
             cell.style.backgroundColor = cell.readOnly ? '#eee' : 'white';
             cell.style.color = 'black';
-            // Clear any existing highlights
             this.clearHighlights();
         });
         console.log("Grid solved.");
@@ -141,7 +140,6 @@ window.Hexdoku = {
                      cell.value = '';
                      cell.style.backgroundColor = 'white';
                      cell.style.color = 'black';
-                     // Clear any existing highlights
                      this.clearHighlights();
                  }
              });
@@ -162,7 +160,7 @@ window.Hexdoku = {
             .then(solution => {
                 if (!solution) return { hasErrors: false, isComplete: false };
 
-                let hasErrors = false;
+                let hasErrors   = false;
                 let emptyFields = false;
                 const cells = this.gridElement.querySelectorAll('input');
 
@@ -173,8 +171,8 @@ window.Hexdoku = {
                         return;
                     }
 
-                    const r = parseInt(cell.dataset.row);
-                    const c = parseInt(cell.dataset.col);
+                    const r            = parseInt(cell.dataset.row);
+                    const c            = parseInt(cell.dataset.col);
                     const currentValue = cell.value.toUpperCase();
                     const correctValue = solution[r][c].toUpperCase();
 
@@ -188,12 +186,12 @@ window.Hexdoku = {
                         hasErrors = true;
                         if (this.highlightErrorsEnabled) {
                             cell.style.backgroundColor = 'red';
-                            cell.style.color = 'white';
+                            cell.style.color           = 'white';
                         }
                     } else {
                         if (this.highlightErrorsEnabled) {
                             cell.style.backgroundColor = 'white';
-                            cell.style.color = 'black';
+                            cell.style.color           = 'black';
                         }
                     }
                 });
@@ -217,28 +215,28 @@ window.Hexdoku = {
 
         // Create new overlay
         this.overlayElement = document.createElement('div');
-        this.overlayElement.style.position = 'fixed';
-        this.overlayElement.style.top = '50%';
-        this.overlayElement.style.left = '50%';
-        this.overlayElement.style.transform = 'translate(-50%, -50%)';
+        this.overlayElement.style.position        = 'fixed';
+        this.overlayElement.style.top             = '50%';
+        this.overlayElement.style.left            = '50%';
+        this.overlayElement.style.transform       = 'translate(-50%, -50%)';
         this.overlayElement.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
-        this.overlayElement.style.color = 'white';
-        this.overlayElement.style.padding = '20px';
-        this.overlayElement.style.borderRadius = '10px';
-        this.overlayElement.style.zIndex = '1000';
-        this.overlayElement.style.textAlign = 'center';
-        this.overlayElement.innerHTML = message;
+        this.overlayElement.style.color           = 'white';
+        this.overlayElement.style.padding         = '20px';
+        this.overlayElement.style.borderRadius    = '10px';
+        this.overlayElement.style.zIndex          = '1000';
+        this.overlayElement.style.textAlign       = 'center';
+        this.overlayElement.innerHTML             = message;
 
         // Add close button
-        const closeButton = document.createElement('button');
-        closeButton.textContent = 'Close';
-        closeButton.style.marginTop = '15px';
-        closeButton.style.padding = '8px 16px';
-        closeButton.style.border = 'none';
-        closeButton.style.borderRadius = '5px';
-        closeButton.style.backgroundColor = '#fff';
-        closeButton.style.cursor = 'pointer';
-        closeButton.onclick = () => document.body.removeChild(this.overlayElement);
+        const closeButton                       = document.createElement('button');
+              closeButton.textContent           = 'Close';
+              closeButton.style.marginTop       = '15px';
+              closeButton.style.padding         = '8px 16px';
+              closeButton.style.border          = 'none';
+              closeButton.style.borderRadius    = '5px';
+              closeButton.style.backgroundColor = '#fff';
+              closeButton.style.cursor          = 'pointer';
+              closeButton.onclick               = () => document.body.removeChild(this.overlayElement);
         this.overlayElement.appendChild(document.createElement('br'));
         this.overlayElement.appendChild(closeButton);
 
@@ -254,12 +252,10 @@ window.Hexdoku = {
                 // Only enable error highlighting and show message when grid is complete
                 this.createOverlay('❌ Some errors were found. Keep trying! ❌');
                 this.highlightErrorsEnabled = true;
-                // Update the checkbox in the UI
                 this.dotNetHelper.invokeMethodAsync('SetHighlightErrors', true);
                 this.checkAllErrors();
                 return false;
             }
-            // For incomplete puzzles, don't show messages or enable highlighting
             return false;
         });
     },
@@ -281,9 +277,9 @@ window.Hexdoku = {
     },
 
     highlightMatchingCells: function(activeCell) {
-        const value = activeCell.value.toUpperCase();
-        const activeRow = parseInt(activeCell.dataset.row);
-        const activeCol = parseInt(activeCell.dataset.col);
+        const value            = activeCell.value.toUpperCase();
+        const activeRow        = parseInt(activeCell.dataset.row);
+        const activeCol        = parseInt(activeCell.dataset.col);
         const activeSubGridRow = Math.floor(activeRow / 4);
         const activeSubGridCol = Math.floor(activeCol / 4);
 
@@ -299,19 +295,19 @@ window.Hexdoku = {
         });
 
         cells.forEach(cell => {
-            const cellValue = cell.value.toUpperCase();
-            const cellRow = parseInt(cell.dataset.row);
-            const cellCol = parseInt(cell.dataset.col);
+            const cellValue      = cell.value.toUpperCase();
+            const cellRow        = parseInt(cell.dataset.row);
+            const cellCol        = parseInt(cell.dataset.col);
             const cellSubGridRow = Math.floor(cellRow / 4);
             const cellSubGridCol = Math.floor(cellCol / 4);
 
             // Reset styling for non-readonly cells first
             if (!cell.readOnly) {
                 cell.style.backgroundColor = 'white';
-                cell.style.color = 'black';
+                cell.style.color           = 'black';
             } else {
                 cell.style.backgroundColor = '#eee';
-                cell.style.color = 'black';
+                cell.style.color           = 'black';
             }
 
             // Add light blue highlight for same row, column, or sub-grid
@@ -322,8 +318,8 @@ window.Hexdoku = {
 
             // Check if any values are fully placed (appear 16 times)
             if (cellValue && valueCounts.get(cellValue) === 16) {
-                cell.style.backgroundColor = '#D2FAD2'; // Light green
-                cell.style.color = '#888888'; // Light grey text
+                cell.style.backgroundColor = '#D2FAD2';  // Light green
+                cell.style.color           = '#888888';  // Light grey text
             }
             // Then highlight matching value cells (higher priority than row/column highlight)
             else if (cellValue === value && value !== '') {
