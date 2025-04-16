@@ -208,7 +208,7 @@ window.Hexdoku = {
     },
 
     createOverlay: function(message) {
-        if (this.overlayElement) {
+        if (this.overlayElement && document.body.contains(this.overlayElement)) {
             document.body.removeChild(this.overlayElement);
         }
 
@@ -246,21 +246,16 @@ window.Hexdoku = {
         return this.checkAllErrors().then(result => {
             if (!result.hasErrors && result.isComplete) {
                 this.createOverlay('🎉 Congratulations! You solved the puzzle correctly! 🎉');
-                console.log("Puzzle solved correctly.");
                 return true;
             }
             if (result.hasErrors && result.isComplete) {
                 // Only enable error highlighting and show message when grid is complete
-                console.log("Puzzle is complete but has errors.");
                 this.createOverlay('❌ Some errors were found. Keep trying! ❌');
                 this.highlightErrorsEnabled = true;
                 this.dotNetHelper.invokeMethodAsync('SetHighlightErrors', true);
                 this.checkAllErrors();
                 return false;
             }
-            console.log("Puzzle is not complete.");
-            console.log("Errors found:", result.hasErrors);
-            console.log("Is complete:", result.isComplete);
             return false;
         });
     },
