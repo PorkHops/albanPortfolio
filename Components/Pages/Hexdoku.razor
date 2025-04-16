@@ -169,6 +169,14 @@
         return CurrentPuzzle?.Solution;
     }
 
+    // Method to be called from JavaScript to update the highlight errors checkbox
+    [JSInvokable]
+    public void SetHighlightErrors(bool value)
+    {
+        HighlightErrors = value;
+        StateHasChanged();
+    }
+
     // Models
     public class HexdokuPuzzles
     {

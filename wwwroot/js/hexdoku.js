@@ -3,6 +3,7 @@ window.Hexdoku = {
     dotNetHelper: null,
     currentPuzzleData: null,
     highlightErrorsEnabled: false,
+    overlayElement: null,
 
     init: function (dotNetHelper) {
         console.log("Hexdoku JS Initializing...");
@@ -56,7 +57,6 @@ window.Hexdoku = {
                 if (r === 15) cell.style.borderBottom = '1px solid #ccc';
                 if (c === 15) cell.style.borderRight = '1px solid #ccc';
 
-
                 const initialValue = puzzleData[r][c];
                 if (initialValue && initialValue !== '.') {
                     cell.value = initialValue.toUpperCase();
@@ -107,6 +107,8 @@ window.Hexdoku = {
                 input.value = value;
                 this.checkAllErrors();
                 this.highlightMatchingCells(input);
+                // Check if puzzle is complete after each valid input
+                this.validatePuzzle();
             }
         }
     },
@@ -156,25 +158,14 @@ window.Hexdoku = {
     checkAllErrors: function() {
         if (!this.dotNetHelper) return;
 
-        if (!this.highlightErrorsEnabled) {
-            const cells = this.gridElement.querySelectorAll('input');
-            cells.forEach(cell => {
-                if (!cell.readOnly) { // Only reset user cells
-                    cell.style.backgroundColor = 'white';
-                    cell.style.color = 'black';
-                } else {
-                    cell.style.backgroundColor = '#eee'; // Keep pre-filled style
-                    cell.style.color = 'black';
-                }
-            });
-            return;
-        }
-
-        this.dotNetHelper.invokeMethodAsync('GetSolution')
+        return this.dotNetHelper.invokeMethodAsync('GetSolution')
             .then(solution => {
-                if (!solution) return;
+                if (!solution) return { hasErrors: false, isComplete: false };
 
+                let hasErrors = false;
+                let emptyFields = false;
                 const cells = this.gridElement.querySelectorAll('input');
+
                 cells.forEach(cell => {
                     if (cell.readOnly) {
                         cell.style.backgroundColor = '#eee';
@@ -187,21 +178,90 @@ window.Hexdoku = {
                     const currentValue = cell.value.toUpperCase();
                     const correctValue = solution[r][c].toUpperCase();
 
-                    if (currentValue && currentValue !== correctValue) {
-                        cell.style.backgroundColor = 'red'; // Bright red for errors
-                        cell.style.color = 'white'; // Make text visible
-                    } else if (currentValue) {
-                        // Correct value
-                        cell.style.backgroundColor = 'white';
-                        cell.style.color = 'black';
+                    if (!currentValue) {
+                        emptyFields = true;
+                        if (this.highlightErrorsEnabled) {
+                            cell.style.backgroundColor = 'white';
+                            cell.style.color = 'black';
+                        }
+                    } else if (currentValue !== correctValue) {
+                        hasErrors = true;
+                        if (this.highlightErrorsEnabled) {
+                            cell.style.backgroundColor = 'red';
+                            cell.style.color = 'white';
+                        }
                     } else {
-                        // Empty cell
-                        cell.style.backgroundColor = 'white';
-                        cell.style.color = 'black';
+                        if (this.highlightErrorsEnabled) {
+                            cell.style.backgroundColor = 'white';
+                            cell.style.color = 'black';
+                        }
                     }
                 });
+
+                return {
+                    hasErrors: hasErrors,
+                    isComplete: !emptyFields && !hasErrors
+                };
             })
-            .catch(error => console.error("Error getting solution for validation:", error));
+            .catch(error => {
+                console.error("Error getting solution for validation:", error);
+                return { hasErrors: true, isComplete: false };
+            });
+    },
+
+    createOverlay: function(message) {
+        // Remove existing overlay if any
+        if (this.overlayElement) {
+            document.body.removeChild(this.overlayElement);
+        }
+
+        // Create new overlay
+        this.overlayElement = document.createElement('div');
+        this.overlayElement.style.position = 'fixed';
+        this.overlayElement.style.top = '50%';
+        this.overlayElement.style.left = '50%';
+        this.overlayElement.style.transform = 'translate(-50%, -50%)';
+        this.overlayElement.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+        this.overlayElement.style.color = 'white';
+        this.overlayElement.style.padding = '20px';
+        this.overlayElement.style.borderRadius = '10px';
+        this.overlayElement.style.zIndex = '1000';
+        this.overlayElement.style.textAlign = 'center';
+        this.overlayElement.innerHTML = message;
+
+        // Add close button
+        const closeButton = document.createElement('button');
+        closeButton.textContent = 'Close';
+        closeButton.style.marginTop = '15px';
+        closeButton.style.padding = '8px 16px';
+        closeButton.style.border = 'none';
+        closeButton.style.borderRadius = '5px';
+        closeButton.style.backgroundColor = '#fff';
+        closeButton.style.cursor = 'pointer';
+        closeButton.onclick = () => document.body.removeChild(this.overlayElement);
+        this.overlayElement.appendChild(document.createElement('br'));
+        this.overlayElement.appendChild(closeButton);
+
+        document.body.appendChild(this.overlayElement);
+    },
+
+    validatePuzzle: function() {
+        return this.checkAllErrors().then(result => {
+            if (!result.hasErrors && result.isComplete) {
+                this.createOverlay('🎉 Congratulations! You solved the puzzle correctly! 🎉');
+                return true;
+            } else if (result.isComplete) {
+                // Only enable error highlighting and show message when grid is complete
+                this.createOverlay('❌ Some errors were found. Keep trying! ❌');
+                this.highlightErrorsEnabled = true;
+                // Update the checkbox in the UI
+                this.dotNetHelper.invokeMethodAsync('SetHighlightErrors', true);
+                this.checkAllErrors();
+                return false;
+            }
+            // For incomplete puzzles, don't show messages or enable highlighting
+            return false;
+        });
     },
 
     clearHighlights: function() {
