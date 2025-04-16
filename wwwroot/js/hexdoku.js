@@ -198,7 +198,7 @@ window.Hexdoku = {
 
                 return {
                     hasErrors: hasErrors,
-                    isComplete: !emptyFields && !hasErrors
+                    isComplete: !emptyFields
                 };
             })
             .catch(error => {
@@ -208,12 +208,10 @@ window.Hexdoku = {
     },
 
     createOverlay: function(message) {
-        // Remove existing overlay if any
         if (this.overlayElement) {
             document.body.removeChild(this.overlayElement);
         }
 
-        // Create new overlay
         this.overlayElement = document.createElement('div');
         this.overlayElement.style.position        = 'fixed';
         this.overlayElement.style.top             = '50%';
@@ -234,9 +232,10 @@ window.Hexdoku = {
               closeButton.style.padding         = '8px 16px';
               closeButton.style.border          = 'none';
               closeButton.style.borderRadius    = '5px';
-              closeButton.style.backgroundColor = '#fff';
+              closeButton.style.backgroundColor = '#756bdf';
               closeButton.style.cursor          = 'pointer';
               closeButton.onclick               = () => document.body.removeChild(this.overlayElement);
+
         this.overlayElement.appendChild(document.createElement('br'));
         this.overlayElement.appendChild(closeButton);
 
@@ -247,15 +246,21 @@ window.Hexdoku = {
         return this.checkAllErrors().then(result => {
             if (!result.hasErrors && result.isComplete) {
                 this.createOverlay('🎉 Congratulations! You solved the puzzle correctly! 🎉');
+                console.log("Puzzle solved correctly.");
                 return true;
-            } else if (result.isComplete) {
+            }
+            if (result.hasErrors && result.isComplete) {
                 // Only enable error highlighting and show message when grid is complete
+                console.log("Puzzle is complete but has errors.");
                 this.createOverlay('❌ Some errors were found. Keep trying! ❌');
                 this.highlightErrorsEnabled = true;
                 this.dotNetHelper.invokeMethodAsync('SetHighlightErrors', true);
                 this.checkAllErrors();
                 return false;
             }
+            console.log("Puzzle is not complete.");
+            console.log("Errors found:", result.hasErrors);
+            console.log("Is complete:", result.isComplete);
             return false;
         });
     },
@@ -284,7 +289,7 @@ window.Hexdoku = {
         const activeSubGridCol = Math.floor(activeCol / 4);
 
         const cells = this.gridElement.querySelectorAll('input');
-        
+
         // Count occurrences of each value in the grid
         const valueCounts = new Map();
         cells.forEach(cell => {
