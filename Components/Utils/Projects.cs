@@ -1,4 +1,4 @@
-namespace albanPortfolio.Components.Pages.Projects.Professional;
+namespace albanPortfolio.Components.Utils;
 
 public class Project
 {
@@ -345,6 +345,17 @@ public static class ProjectsData
             [
                 new()
                 {
+                    Title   = "This site!",
+                    Bullets =
+                    [
+                        "This website is built with Blazor and C#.",
+                        "I wanted to create a personal website that was easy to use and navigate.",
+                        "I used Blazor because I love Blazor, but most of the other sites below are made using some form of JS.",
+                        "The site is hosted on GitHub Pages, and the code is available on my GitHub!",
+                    ]
+                },
+                new()
+                {
                     Title   = "WhatsAWordWith",
                     Bullets =
                     [
@@ -375,6 +386,62 @@ public static class ProjectsData
                         "As it turns out, publishing a Chrome extension involves a lot of red tape (I don't wan't to type out a privacy policy), so while the extension is not published, "
                         + "you can compile and load it into Chrome yourself from my GH.",
                         "https://github.com/PorkHops/ChromeLinkedInFilter",
+                    ]
+                },
+                new()
+                {
+                    Title   = "Hexedoku",
+                    Bullets =
+                    [
+                        "I have been looking at a lot of hex tables lately, and I thought it would be a fun idea to make a sudoku for other computer nerds.",
+                        "It is available under the demos tab, and has more information about the development on the page.",
+                    ]
+                },
+                new()
+                {
+                    Title   = "Cryptogram Workshop",
+                    Bullets =
+                    [
+                        "I enjoy cryptograms and other cryptography puzzles.",
+                        "I recently joined the codes and cryptography subreddit and have been seeing a lot of codes posted",
+                        "Wanting to solve these (and being a tech head), I noticed that there was no site that allowed you to create your own and solve it on the page.",
+                        "So I made one!",
+                        "This site is a simple JS app that allows users to input and solve their own cryptograms.",
+                        "The site expects a simple substitution cipher to decrypt the text. User input the encrypted text and the page created input boxes for their cipher.",
+                        "I made this site to practice my JS skills, and it was a lot of fun to make.",
+                        "Try it out under the demos tab in the main menu!",
+                    ]
+                }
+            ]
+        },
+        new()
+        {
+            Title       = "In Development Projects",
+            Description = "These are projects that I am currently working on, or have plans to work on in the future.",
+            Sections    =
+            [
+                new()
+                {
+                    Title   = "Grouped Taskbar Apps for PowerToys",
+                    Bullets =
+                    [
+                        "I have been using PowerToys for a while now, and I love it.",
+                        "One thing I have always wished for on Windows is the ability to group taskbar apps.",
+                        "I am attempting to make a module for this that can be integrated into PowerToys.",
+                        "The hope is to basically turn the taskbar into a bookmarks bar and allow \"folders\" to be created to group apps together.",
+                        "Currently in development."
+                    ]
+                },
+                new()
+                {
+                    Title   = "Google Home Shell Commands",
+                    Bullets =
+                    [
+                        "I have quite a few raspberry pi's and other devices in my home network.",
+                        "Sometimes I want to send a command to one of them, but I don't want to have to open a terminal and type it out.",
+                        "I am working on a way to send shell commands to my devices using Google Home.",
+                        "The idea is to create a virtual \"device\" that can be controlled by Google Home.",
+                        "It would likely only send basic/preset commands, but it could be useful and a fun project.",
                     ]
                 }
             ]
