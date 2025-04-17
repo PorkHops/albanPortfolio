@@ -16,10 +16,10 @@
     {
         <MudTabPanel Text="@project.Title">
             <MudText Typo="Typo.h5" Class="mb-4">@project.Title</MudText>
-            <MudText Class="mb-4">@((MarkupString)project.Description)</MudText>
+            <MudText Class="mb-5">@((MarkupString)project.Description)</MudText>
             @foreach (var projectSection in project.Sections)
             {
-                <MudText Typo="Typo.h6" Class="mt-6 mb-3">@projectSection.Title</MudText>
+                <MudText Typo="Typo.h6" Class="mt-6 mb-4">@projectSection.Title</MudText>
                 <MudGrid>
                     @foreach (var bullet in projectSection.Bullets)
                     {
