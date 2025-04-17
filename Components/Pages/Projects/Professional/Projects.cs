@@ -224,6 +224,16 @@ public static class ProjectsData
                         + "reduced to almost nothing.",
                         "I just wish someone had this genius idea a little earlier in the project haha.",
                     ]
+                },
+                new()
+                {
+                    Title   = "Results",
+                    Bullets =
+                    [
+                        "The Geofence Mapping tool fulfilled its purpose with flying colors.",
+                        "The tool was able to process the data in a reasonable amount of time, and the results were validated against real maps.",
+                        "Due to the overly successful validation, maintenance and upkeep of the tool was minimal.",
+                    ]
                 }
             ],
         },
@@ -309,6 +319,17 @@ public static class ProjectsData
                         "With their data structures in hand, I created visualization pages for them. Since we had strict security protocols, users could only see pages and data that they were authorized for.",
                         "This meant that we had to create a lot of different pages for different teams, but it was worth it.",
                         "The Blazor app was able to pull in data from the Geofence Mapping tool, and the APIs streamlined the process of getting data from other teams."
+                    ]
+                },
+                new()
+                {
+                    Title   = "Results",
+                    Bullets =
+                    [
+                        "Both the Blazor app and the PBI were huge successes, and the stakeholders loved them.",
+                        "They were able to see how many roads were filtered out, and how many were added.",
+                        "The app was able to pull in data from the Geofence Mapping tool, and the APIs streamlined the process of getting data from other teams.",
+                        "The app was able to be used by all teams in the mapping space, and it was a great way to visualize the data."
                     ]
                 }
 
