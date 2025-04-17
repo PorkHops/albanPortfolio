@@ -336,26 +336,48 @@ public static class ProjectsData
             ]
         },
 
-        // new()
-        // {
-        //     Title       = "",
-        //     Description = ""
-        //                   + "",
-        //     Sections    =
-        //     [
-        //         new()
-        //         {
-        //             Title   = "",
-        //             Bullets =
-        //             [
-        //                 ""
-        //             ]
-        //         }
-        //     ]
-        // }
-
-        /*
-        // Add more projects here as needed
-        */
+        new()
+        {
+            Title       = "Personal Projects",
+            Description = "Below are various personal projects that I have worked on in my spare time. "
+                          + "These projects are not as polished as the professional ones, but they are still a great way to show my skills and interests",
+            Sections    =
+            [
+                new()
+                {
+                    Title   = "WhatsAWordWith",
+                    Bullets =
+                    [
+                        "https://whatsawordwith.com/",
+                        "A simple site I created that allows users to find words based on specific criteria.",
+                        "Users input given letters, placeholders spots (*), optional letters spots (?), required letters to use, and omitted letters.",
+                        "The site then returns a list of words that match the criteria.",
+                        "An example would be 'he**o?' as the main input, 'n' as required, and 'l' as omitted, it would return hereon as the only valid word.",
+                        "I made this site to cheat at certain word games like Wordle and SquareWord.",
+                        "This site was built with React and Typescript.",
+                        "Honestly the hardest part was finding a dictionary. Turns out there are not many useful APIs for dictionaries. I ended up just using a txt file with a list of words.",
+                    ]
+                },
+                new()
+                {
+                    Title   = "Chrome LinkedIn Filter",
+                    Bullets =
+                    [
+                        "You every notice how all those job postings on LinkedIn are 99% Promoted posts?",
+                        "Me too, and I hate it and getting any reply from those is a lost cause.",
+                        "So I made a Chrome extension that removes them!",
+                        "This extension is a simple JS script that runs on LinkedIn and removes all the promoted posts.",
+                        "Sadly, due to Chrome's new Manifest V3 (the thing that killed uBlock), posts are only able to be removed after they are loaded.",
+                        "This means that with the extension on, an entire pagination tab of job posts could be removed, so the tab could load with 0 entries making you go to the next page.",
+                        "This is a bit annoying, but it is better than having to scroll through 100s of promoted posts.",
+                        "Future improvements include adding in a company blacklist, so that you can remove all posts from certain spammy companies.",
+                        "I also want to add in hard keyword search since search engine commands like \"word\" are not supported by linked in.",
+                        "As it turns out, publishing a Chrome extension involves a lot of red tape (I don't wan't to type out a privacy policy), so while the extension is not published, "
+                        + "you can compile and load it into Chrome yourself from my GH.",
+                        "https://github.com/PorkHops/ChromeLinkedInFilter",
+                    ]
+                }
+            ]
+        }
     ];
 }
