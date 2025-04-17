@@ -1,0 +1,3 @@
+[submodule "wwwroot/projects/cryptogram"]
+	path = wwwroot/projects/cryptogram
+	url = https://github.com/PorkHops/cryptogram-workshop.git
