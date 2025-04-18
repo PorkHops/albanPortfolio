@@ -28,19 +28,12 @@ jobs:
       run: |
         dotnet build
         dotnet publish -c Release -o release --nologo
-        # Move contents from nested directory up one level
         mv release/wwwroot/albanPortfolio/* release/wwwroot/
         rm -rf release/wwwroot/albanPortfolio
-        ls -la release/wwwroot/
 
     - name: Change base-tag in index.html
       run: |
-        if [ -f "release/wwwroot/index.html" ]; then
           sed -i 's/<base href="\/" \/>/<base href="\/albanPortfolio\/" \/>/g' release/wwwroot/index.html
-        else
-          echo "index.html not found in release/wwwroot/"
-          exit 1
-        fi
 
     - name: Add .nojekyll file
       run: touch release/wwwroot/.nojekyll
