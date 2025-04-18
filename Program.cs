@@ -1,30 +1,14 @@
 using albanPortfolio.Components;
 using MudBlazor.Services;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-builder.Services.AddRazorComponents()
-                .AddInteractiveServerComponents();
+builder.RootComponents.Add<App>("#app");
 
 builder.Services.AddMudServices();
-builder.Services.AddHttpClient();
-builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-var app = builder.Build();
-
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseAntiforgery();
-
-app.MapRazorComponents<App>()
-   .AddInteractiveServerRenderMode();
-
-app.Run();
+await builder.Build().RunAsync();
 
 // lsof -ti:5022 | xargs kill -9

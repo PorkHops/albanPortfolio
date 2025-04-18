@@ -2,9 +2,9 @@
 @using MudBlazor.Utilities
 @using MudBlazor
 @using System.Text.Json
-@using System.IO
 @using albanPortfolio.Components.Utils
-@inject IWebHostEnvironment Environment
+
+@inject HttpClient Http
 
 <PageTitle>Alban!</PageTitle>
 
@@ -69,28 +69,34 @@
     private List<Skill> frontendSkills = new List<Skill>();
     private List<Skill> toolSkills     = new List<Skill>();
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        LoadSkills();
-        return Task.CompletedTask;
+        await LoadSkills();
     }
 
-    private void LoadSkills()
+    private async Task LoadSkills()
     {
         try
         {
-            var filePath   = Path.Combine(Environment.ContentRootPath, "Components", "Utils", "Skills.json");
-            var jsonString = File.ReadAllText(filePath);
-            var response   = JsonSerializer.Deserialize<SkillsData>(jsonString, new JsonSerializerOptions
+            var response = await Http.GetAsync("data/Skills.json");
+            if (response.IsSuccessStatusCode)
             {
-                PropertyNameCaseInsensitive = true
-            });
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var data = JsonSerializer.Deserialize<SkillsData>(jsonString, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
 
-            if (response?.Skills != null)
+                if (data?.Skills != null)
+                {
+                    frontendSkills = data.Skills.Frontend;
+                    backendSkills = data.Skills.Backend;
+                    toolSkills = data.Skills.Tools;
+                }
+            }
+            else
             {
-                frontendSkills = response.Skills.Frontend;
-                backendSkills  = response.Skills.Backend;
-                toolSkills     = response.Skills.Tools;
+                Console.WriteLine($"Error loading skills: {response.StatusCode}");
             }
         }
         catch (Exception ex)

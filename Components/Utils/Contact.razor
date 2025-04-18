@@ -1,7 +1,7 @@
 @using MudBlazor
 @using System.Text.Json
-@using System.IO
-@inject IWebHostEnvironment Environment
+
+@inject HttpClient Http
 
 <MudStack Row="true" Justify="@Justify" Spacing="4">
     @foreach (var link in socialLinks)
@@ -44,29 +44,33 @@
 
     private List<SocialLink> socialLinks = new();
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        LoadContactInfo();
-        return Task.CompletedTask;
+        await LoadContactInfo();
     }
 
-    private void LoadContactInfo()
+    private async Task LoadContactInfo()
     {
         try
         {
-            var filePath   = Path.Combine(Environment.ContentRootPath, "Components", "Utils", "Contact.json");
-            var jsonString = File.ReadAllText(filePath);
-            var response   = JsonSerializer.Deserialize<ContactData>(jsonString, new JsonSerializerOptions
+            var response = await Http.GetAsync("data/Contact.json");
+            if (response.IsSuccessStatusCode)
             {
-                PropertyNameCaseInsensitive = true
-            });
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var data = JsonSerializer.Deserialize<ContactData>(jsonString, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
 
-            if (response?.SocialLinks != null)
-            {
-                socialLinks = response.SocialLinks;
+                if (data?.SocialLinks != null)
+                {
+                    socialLinks = data.SocialLinks;
+                }
             }
-
-            Console.WriteLine($"Loading contact info from: {filePath}");
+            else
+            {
+                Console.WriteLine($"Error loading contact info: {response.StatusCode}");
+            }
         }
         catch (Exception ex)
         {

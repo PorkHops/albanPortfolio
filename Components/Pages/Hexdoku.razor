@@ -1,15 +1,11 @@
 @page "/hexdoku"
 @using System.Text.Json
 @using System.Text.Json.Serialization
-@inject IWebHostEnvironment Environment
+
 @inject IJSRuntime JSRuntime
 @inject HttpClient Http
 
 <PageTitle>Hexdoku</PageTitle>
-
-<HeadContent>
-    <script src="js/hexdoku.js"></script>
-</HeadContent>
 
 <MudContainer MaxWidth="MaxWidth.Medium">
     <MudText Typo="Typo.h3" GutterBottom="true">Hexdoku</MudText>
@@ -97,10 +93,20 @@
     {
         try
         {
-            string jsonPath = Path.Combine(Environment.ContentRootPath, "Components", "Utils", "hexdoku.json");
-            var jsonString = await File.ReadAllTextAsync(jsonPath);
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            AllPuzzles = JsonSerializer.Deserialize<HexdokuPuzzles>(jsonString, options);
+            var response = await Http.GetAsync("data/hexdoku.json");
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                AllPuzzles = JsonSerializer.Deserialize<HexdokuPuzzles>(jsonString, options);
+
+                // Load initial puzzle after data is ready
+                await LoadPuzzle();
+            }
+            else
+            {
+                Console.WriteLine($"Error loading hexdoku puzzles: {response.StatusCode}");
+            }
         }
         catch (Exception ex)
         {
@@ -114,7 +120,12 @@
         {
             await JSRuntime.InvokeVoidAsync("Hexdoku.init", DotNetObjectReference.Create(this));
             await JSRuntime.InvokeVoidAsync("Hexdoku.setHighlightErrors", HighlightErrors);
-            await LoadPuzzle();
+
+            // Only load puzzle if data is available
+            if (AllPuzzles != null)
+            {
+                await LoadPuzzle();
+            }
         }
     }
 
