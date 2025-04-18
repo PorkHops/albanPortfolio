@@ -22,10 +22,19 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Publish .NET Project
-      run: dotnet publish albanPortfolio.csproj -c Release -o release --nologo
+      run: |
+        dotnet build
+        dotnet publish -c Release -o release --nologo
+        ls -la release/wwwroot/
 
     - name: Change base-tag in index.html
-      run: sed -i 's/<base href="\/" \/>/<base href="\/albanPortfolio\/" \/>/g' release/wwwroot/index.html
+      run: |
+        if [ -f "release/wwwroot/index.html" ]; then
+          sed -i 's/<base href="\/" \/>/<base href="\/albanPortfolio\/" \/>/g' release/wwwroot/index.html
+        else
+          echo "index.html not found in release/wwwroot/"
+          exit 1
+        fi
 
     - name: Add .nojekyll file
       run: touch release/wwwroot/.nojekyll
