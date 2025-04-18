@@ -12,10 +12,14 @@
 
     <MudGrid Spacing="2" Justify="Justify.FlexStart" Class="mb-4">
         <MudItem xs="12" sm="8" Class="d-flex align-center flex-wrap">
-             <MudButton Variant="Variant.Filled" Color="Color.Primary"   Class="mr-2 mb-2" OnClick="LoadPuzzle" >Load Puzzle</MudButton>
-             <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="mr-2 mb-2" OnClick="SolvePuzzle">Solve</MudButton>
-             <MudButton Variant="Variant.Filled" Color="Color.Warning"   Class="mr-2 mb-2" OnClick="ClearGrid"  >Clear</MudButton>
-             <MudCheckBox T="bool" @bind-Value="HighlightErrors" Label="Highlight Errors" Color="Color.Error" Class="mb-2"></MudCheckBox>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="mr-2 mb-2" OnClick="LoadPuzzle">Load Puzzle
+            </MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" Class="mr-2 mb-2" OnClick="SolvePuzzle">Solve
+            </MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Warning" Class="mr-2 mb-2" OnClick="ClearGrid">Clear
+            </MudButton>
+            <MudCheckBox T="bool" @bind-Value="HighlightErrors" Label="Highlight Errors" Color="Color.Error"
+                Class="mb-2"></MudCheckBox>
         </MudItem>
         <MudItem xs="12" sm="4">
             <MudSelect @bind-Value="SelectedDifficulty" Label="Difficulty" Variant="Variant.Outlined">
@@ -29,7 +33,8 @@
     <div id="hexdoku-grid"></div>
 
     <MudText Typo="Typo.body1" Class="mt-4">
-        <p>Hexdoku is a variant of Sudoku played on a hexagonal grid. The objective is to fill the grid with Hexadecimal numbers (0-9 and A-F) such that each number appears exactly once in each row, column, and hexagon.</p>
+        <p>Hexdoku is a variant of Sudoku played on a hexagonal grid. The objective is to fill the grid with Hexadecimal
+            numbers (0-9 and A-F) such that each number appears exactly once in each row, column, and hexagon.</p>
         <p>Enjoy solving!</p>
     </MudText>
 
@@ -39,19 +44,25 @@
     <MudDivider />
     <MudCollapse Expanded="_expanded">
         <MudPaper Class="pa-8 text-center" Elevation="2">
-        <MudText Class="mb-4">I wanted to make a fun little twist on sudoku for programmers and other nerds.</MudText>
-        <MudText Class="mb-4">During this project, I ran into issues with C# taking up way too much memory and time
-            trying to generate the puzzles itself, so I turned to everyone's best friend when data is taking too long:
-            Python. Having the puzzles pre-generated saved a lot of time and resources. After generating the puzzles,
-            they (along with their solutions) were saved to a json.</MudText>
-        <MudText Class="mb-4">There are 5 unique puzzles per difficulty because 5 is an amazing number.</MudText>
-        <MudText Class="mb-4">The grid itself is actually rendered with javascript and embedded into the surrounding
-            Blazor page. Blazor is great at many things, but something like this was not its strong-suit. Using JS was
-            far more efficient.</MudText>
-        <MudText Class="mb-4">All of the buttons however were kept as Blazor items in order to preserve the site flow.
-            They are sent via an injected IJSRuntime.</MudText>
-        <MudText Class="mb-4">So this page is actually made possible by mashing together C#/Blazor, Javascript, and Python!</MudText>
-    </MudPaper>
+            <MudText Class="mb-4">I wanted to make a fun little twist on sudoku for programmers and other nerds.
+            </MudText>
+            <MudText Class="mb-4">During this project, I ran into issues with C# taking up way too much memory and time
+                trying to generate the puzzles itself, so I turned to everyone's best friend when data is taking too
+                long:
+                Python. Having the puzzles pre-generated saved a lot of time and resources. After generating the
+                puzzles,
+                they (along with their solutions) were saved to a json.</MudText>
+            <MudText Class="mb-4">There are 5 unique puzzles per difficulty because 5 is an amazing number.</MudText>
+            <MudText Class="mb-4">The grid itself is actually rendered with javascript and embedded into the surrounding
+                Blazor page. Blazor is great at many things, but something like this was not its strong-suit. Using JS
+                was
+                far more efficient.</MudText>
+            <MudText Class="mb-4">All of the buttons however were kept as Blazor items in order to preserve the site
+                flow.
+                They are sent via an injected IJSRuntime.</MudText>
+            <MudText Class="mb-4">So this page is actually made possible by mashing together C#/Blazor, Javascript, and
+                Python!</MudText>
+        </MudPaper>
     </MudCollapse>
 
 </MudContainer>
@@ -93,7 +104,7 @@
     {
         try
         {
-            var response = await Http.GetAsync("data/hexdoku.json");
+            var response = await Http.GetAsync("hexdoku.json");
             if (response.IsSuccessStatusCode)
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
@@ -129,11 +140,12 @@
         }
     }
 
-    private void OnExpandCollapseClick() {
+    private void OnExpandCollapseClick()
+    {
         _expanded = !_expanded;
     }
 
-     private async Task LoadPuzzle()
+    private async Task LoadPuzzle()
     {
         if (AllPuzzles == null) return;
 
@@ -169,7 +181,7 @@
 
     private async Task ClearGrid()
     {
-         if (CurrentPuzzle?.Puzzle == null) return;
+        if (CurrentPuzzle?.Puzzle == null) return;
         await JSRuntime.InvokeVoidAsync("Hexdoku.createGrid", CurrentPuzzle.Puzzle);
     }
 

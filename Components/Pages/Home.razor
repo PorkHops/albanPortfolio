@@ -16,9 +16,11 @@
             SWE specializing in .NET, Blazor, and Windows Services.
         </MudText>
         <MudText Typo="Typo.body1" Class="mb-4">
-            Welcome to my portfolio! My name is Alban Shekaj. I am a software developer passionate about creating elegant
+            Welcome to my portfolio! My name is Alban Shekaj. I am a software developer passionate about creating
+            elegant
             solutions to complex problems. With expertise in modern web technologies
-            and software development best practices, I bring ideas to life through clean, efficient, and maintainable code.
+            and software development best practices, I bring ideas to life through clean, efficient, and maintainable
+            code.
         </MudText>
     </MudPaper>
 
@@ -65,9 +67,9 @@
 </MudContainer>
 
 @code {
-    private List<Skill> backendSkills  = new List<Skill>();
+    private List<Skill> backendSkills = new List<Skill>();
     private List<Skill> frontendSkills = new List<Skill>();
-    private List<Skill> toolSkills     = new List<Skill>();
+    private List<Skill> toolSkills = new List<Skill>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -78,7 +80,7 @@
     {
         try
         {
-            var response = await Http.GetAsync("data/Skills.json");
+            var response = await Http.GetAsync("Skills.json");
             if (response.IsSuccessStatusCode)
             {
                 var jsonString = await response.Content.ReadAsStringAsync();
@@ -113,20 +115,20 @@
     public class Skills
     {
         public List<Skill> Frontend { get; set; } = new();
-        public List<Skill> Backend { get; set; }  = new();
-        public List<Skill> Tools { get; set; }    = new();
+        public List<Skill> Backend { get; set; } = new();
+        public List<Skill> Tools { get; set; } = new();
     }
 
     public class Skill
     {
-        public string Name { get; set; }  = "";
+        public string Name { get; set; } = "";
         public string Level { get; set; } = "";
         public int Years { get; set; }
         public string Color => Level switch
         {
-            "Advanced"     => "Success",
+            "Advanced" => "Success",
             "Intermediate" => "Info",
-            _              => "Primary"
+            _ => "Primary"
         };
     }
 }

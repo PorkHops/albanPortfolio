@@ -6,11 +6,8 @@
 <MudStack Row="true" Justify="@Justify" Spacing="4">
     @foreach (var link in socialLinks)
     {
-        <MudIconButton Icon   = "@link.GetIconString()"
-                       Color  = "@(Enum.Parse<Color>(link.Color))"
-                       Size   = "@Size"
-                       Href   = "@link.Url"
-                       Target = "_blank" />
+        <MudIconButton Icon="@link.GetIconString()" Color="@(Enum.Parse<Color>(link.Color))" Size="@Size" Href="@link.Url"
+            Target="_blank" />
     }
 </MudStack>
 
@@ -22,17 +19,17 @@
 
     public class SocialLink
     {
-        public string Name { get; set; }  = "";
-        public string Icon { get; set; }  = "";
-        public string Url { get; set; }   = "";
+        public string Name { get; set; } = "";
+        public string Icon { get; set; } = "";
+        public string Url { get; set; } = "";
         public string Color { get; set; } = "Primary";
 
         public string GetIconString() => Icon.ToLower() switch
         {
-            "github"   => Icons.Custom.Brands.GitHub,
+            "github" => Icons.Custom.Brands.GitHub,
             "linkedin" => Icons.Custom.Brands.LinkedIn,
-            "email"    => Icons.Material.Filled.Email,
-            _          => Icons.Material.Filled.Link
+            "email" => Icons.Material.Filled.Email,
+            _ => Icons.Material.Filled.Link
         };
     }
 
@@ -53,7 +50,7 @@
     {
         try
         {
-            var response = await Http.GetAsync("data/Contact.json");
+            var response = await Http.GetAsync("Contact.json");
             if (response.IsSuccessStatusCode)
             {
                 var jsonString = await response.Content.ReadAsStringAsync();

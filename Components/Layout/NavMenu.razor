@@ -1,44 +1,31 @@
 ﻿@using MudBlazor
 @using MudBlazor.Components
 
-<MudNavLink Href        = "/"
-            Icon        = "@Icons.Material.Filled.Home"
-            Class       = "rounded-lg px-3"
-            ActiveClass = "active-nav-link"
-            Match       = "NavLinkMatch.All">
+<MudNavLink Href="/" Icon="@Icons.Material.Filled.Home" Class="rounded-lg px-3" ActiveClass="active-nav-link"
+    Match="NavLinkMatch.All">
     HOME
 </MudNavLink>
-<MudNavLink Href        = "/projects"
-            Icon        = "@Icons.Material.Filled.Business"
-            Class       = "rounded-lg px-3"
-            ActiveClass = "active-nav-link">
+<MudNavLink Href="/projects" Icon="@Icons.Material.Filled.Business" Class="rounded-lg px-3"
+    ActiveClass="active-nav-link">
     PROJECTS
 </MudNavLink>
-@if(IsAppBar)
+@if (IsAppBar)
 {
-    <MudMenu StartIcon = "@Icons.Material.Filled.PlayArrow"
-            Label     = "DEMOS"
-            Expanded  = "false"
-            Class     = "rounded-lg px-3">
+    <MudMenu StartIcon="@Icons.Material.Filled.PlayArrow" Label="DEMOS" Expanded="false" Class="rounded-lg px-3">
         <MudMenuItem Href="/cryptogram" Icon="@Icons.Material.Filled.Deblur">Cryptogram</MudMenuItem>
-        <MudMenuItem Href="/hexdoku"    Icon="@Icons.Material.Filled.Grid4x4">Hexdoku</MudMenuItem>
+        <MudMenuItem Href="/hexdoku" Icon="@Icons.Material.Filled.Grid4x4">Hexdoku</MudMenuItem>
     </MudMenu>
 }
 else
 {
-    <MudNavGroup Icon     = "@Icons.Material.Filled.PlayArrow"
-                 Title    = "DEMOS"
-                 Expanded = "false"
-                 Class    = "rounded-lg px-3">
+    <MudNavGroup Icon="@Icons.Material.Filled.PlayArrow" Title="DEMOS" Expanded="false" Class="rounded-lg px-3">
         <MudNavLink Href="/cryptogram" Icon="@Icons.Material.Filled.Deblur">Cryptogram</MudNavLink>
-        <MudNavLink Href="/hexdoku"    Icon="@Icons.Material.Filled.Grid4x4">Hexdoku</MudNavLink>
+        <MudNavLink Href="/hexdoku" Icon="@Icons.Material.Filled.Grid4x4">Hexdoku</MudNavLink>
     </MudNavGroup>
 }
 
-<MudNavLink Href        = "/contactPage"
-            Icon        = "@Icons.Material.Filled.Email"
-            Class       = "rounded-lg px-3"
-            ActiveClass = "active-nav-link">
+<MudNavLink Href="/contactPage" Icon="@Icons.Material.Filled.Email" Class="rounded-lg px-3"
+    ActiveClass="active-nav-link">
     CONTACT
 </MudNavLink>
 
