@@ -1,13 +1,28 @@
 @page "/cryptogram"
+@inject NavigationManager NavigationManager
 
 <MudContainer MaxWidth="MaxWidth.Medium">
     <MudText Typo="Typo.h3" GutterBottom="true">Cryptogram Workshop</MudText>
     <div class="project-container" style="display: flex; justify-content: center; align-items: center;">
-        <iframe src="/projects/cryptogram/index.html" style="width: 100%; height: 800px; border: none;"
-            title="Cryptogram Workshop">
-        </iframe>
+        @if (!string.IsNullOrEmpty(IframeSrc))
+        {
+            <iframe src="@IframeSrc" style="width: 100%; height: 800px; border: none;" title="Cryptogram Workshop">
+            </iframe>
+        }
+        else
+        {
+            <p>Loading Cryptogram...</p> @* Optional loading indicator *@
+        }
     </div>
 </MudContainer>
 
 @code {
+    private string? IframeSrc { get; set; }
+
+    protected override void OnInitialized()
+    {
+        // Construct the absolute URL for the iframe relative to the app's base URI
+        IframeSrc = NavigationManager.BaseUri + "projects/cryptogram/index.html";
+        base.OnInitialized();
+    }
 }
