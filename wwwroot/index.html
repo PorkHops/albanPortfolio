@@ -22,6 +22,26 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+    <script>
+        // SPA Redirect script for GitHub Pages subdirectory
+        (function () {
+            var redirect = sessionStorage.redirect;
+            delete sessionStorage.redirect;
+            if (redirect && redirect !== location.pathname + location.search) {
+                // Get the base path from the <base> tag
+                var baseTag = document.querySelector('base');
+                var basePath = baseTag ? baseTag.getAttribute('href') : '/';
+                // Ensure the base path ends with a slash if it's not just '/'
+                if (basePath !== '/' && !basePath.endsWith('/')) {
+                    basePath += '/';
+                }
+                // Construct the target path relative to the base path
+                var targetPath = basePath + redirect.substring(basePath.length);
+                // Use history.replaceState to update the URL without reloading
+                history.replaceState(null, null, targetPath);
+            }
+        })();
+    </script>
     <script src="./_framework/blazor.webassembly.js"></script>
     <script src="./_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="./js/hexdoku.js"></script>

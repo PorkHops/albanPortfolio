@@ -6,8 +6,10 @@
     <title>Redirecting...</title>
     <base href="/albanPortfolio/" />
     <script>
-        sessionStorage.redirect = location.href.replace('/404.html', '');
-        location.replace('/albanPortfolio/' + location.pathname.substring(1));
+        // Store the full path (pathname + search query) that the user tried to access
+        sessionStorage.redirect = location.pathname + location.search;
+        // Redirect to the base path of the application (index.html)
+        location.replace('/albanPortfolio/');
     </script>
 </head>
 
