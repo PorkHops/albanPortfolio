@@ -25,6 +25,9 @@ jobs:
       run: |
         dotnet build
         dotnet publish -c Release -o release --nologo
+        # Move contents from nested directory up one level
+        mv release/wwwroot/albanPortfolio/* release/wwwroot/
+        rm -rf release/wwwroot/albanPortfolio
         ls -la release/wwwroot/
 
     - name: Change base-tag in index.html
